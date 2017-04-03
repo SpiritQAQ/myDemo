@@ -3,7 +3,7 @@
 Created using JS Bin
 http://js.jirengu.com
 
-Copyright (c) 2017 by anonymous (http://js.jirengu.com/lonixinizu/1/edit)
+Copyright (c) 2017 by anonymous (http://js.jirengu.com/vovumiqaqo/1/edit)
 
 Released under the MIT license: http://jsbin.mit-license.org
 -->
@@ -25,30 +25,34 @@ li {
   list-style: none;
 }
 #ct {
-  margin: 10px;
+  margin: 10px 0 0 10px;;
   max-width: 15em;
-  background: #e12;
+  background: #c7171e;
 }
 .list {
   position: relative;
   font-size: 1.1em;
   color: #fff;
-  padding: 0.5em 1em;
-  border-top: 0.2px dotted rgba(200, 200, 200, 0.5);
   cursor: pointer;
   vertical-align: middle;
+}
+.list>a{
+  display:block;
+  padding:0.5em 0;
+  margin:0 1em;  
+  border-top: 0.2px dotted #de272e;
 }
 .list:first-child {
   border: 0
 }
-.list>span {
+.list>a>span {
   position: relative;
   left: 6em;
   font-size: 1.2em;
 }
 .ul2 {
   position: absolute;
-  left: 13.6em;
+  left: 13.65em;
   top: 0;
   width: 250px;
   color: #888;
@@ -69,7 +73,7 @@ li {
 <body>
 <ul id=ct>
   <li class = list id='list1'>
-    珠宝玉器<span>></span>
+    <a>珠宝玉器<span>></span></a>
     <ul class = 'ul2'>
       <li>翡翠</li>
       <li>玉石</li>
@@ -78,7 +82,7 @@ li {
     </ul>
   </li>
   <li class = list id='list2'>
-    珠宝玉器<span>></span>
+    <a>珠宝玉器<span>></span></a>
     <ul class=ul2>
       <li>翡翠</li>
       <li>玉石</li>
@@ -89,7 +93,7 @@ li {
     </ul>
   </li>
   <li class = list id='list3'>
-    珠宝玉器<span>></span>
+    <a>珠宝玉器<span>></span></a>
     <ul class=ul2>
       <li>翡翠</li>
       <li>玉石</li>
@@ -98,7 +102,7 @@ li {
     </ul>
   </li>
   <li class = list id='list4'>
-    珠宝玉器<span>></span>
+    <a>珠宝玉器<span>></span></a>
     <ul class = ul2>
       <li>翡翠</li>
       <li>玉石</li>
@@ -108,7 +112,7 @@ li {
       <li>珍珠</li>
     </ul></li>
   <li class = list id='list5'>
-    珠宝玉器<span>></span>
+    <a>珠宝玉器<span>></span></a>
     <ul class = ul2>
       <li>翡翠</li>
       <li>玉石</li>
@@ -117,14 +121,16 @@ li {
     </ul></li>
 </ul>
 <script id="jsbin-javascript">
-$('.list').mouseover(function() {
-  $(this).children('.ul2').addClass('hover')
+
+$('.list').on('mouseover',function() {
+    $(this).children('.ul2').addClass('hover')
 })
 
-$('.list').mouseleave(function() {
-  $(this).children('.ul2').removeClass('hover')
+$('.list').on('mouseleave',function() {
+    $(this).children('.ul2').removeClass('hover')
 
 })
+
 </script>
 </body>
 </html>
