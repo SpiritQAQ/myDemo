@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajax封装</title>
+  <style>
+    *{margin:0;padding : 0;text-decoration: none;
+}
+    #ct li{
+      border : 1px solid #666;
+      padding :20px 20px ; 
+      margin : 10px auto ;
+      background-color:#aaa ;
+      color: white; 
+      width : 500px ;
+      border-radius: 5px;
+    }
+    #load-more{
+      display: block;
+      border:1px solid orangered;
+      border-radius: 3px;
+      text-align: center;
+      width:70px;
+      margin : 0 auto ;
+      padding : 10px 15px ;
+      color :#444 ;
+    }
+    #load-more:hover{
+      background-color: green;
+      color:white;
+    }
+    
+
+  </style>
+</head>
+<body>
+   <ul id="ct">
+     <li>内容1</li>
+     <li>内容2</li>
+   </ul>
+   <a id="load-more" href ='javascript:void(0)' class = 'btn'><!--void(0就是undefined)，点击a执行一个空语句，防止点击跳转。-->
+     加载更多
+   </a>
+   
+</body>
+<script>
+     var btn = document.getElementById('load-more')
+     var ct = document.getElementById('ct')
+     var pageIndex = 2
+     var ajaxLock = false
+     btn.addEventListener('click', function(){
+       if(ajaxLock===true){
+        return;
+       }
+       loadData(render)
+      
+      });
+
+     
+
+
+     function loadData(callback){
+         ajax({
+            url: '/loadMore',   //接口地址
+            type: 'get',               // 类型， post 或者 get,
+            data: {
+                index: pageIndex,
+                length: '5'
+            },
+            success: callback     // {status: 0}
+            ,
+            error: function(){
+              console.log('出错了')
+            }
+        })       
+      
+
+
+     }
+     function ajax(opts){
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState ===4){
+            if(xhr.status ===200||xhr.status === 304){
+                var results = JSON.parse(xhr.responseText) //和后端约定好了使用json格式的数据，解析得到一个数组
+                console.log(results)
+                opts.success(results)
+                pageIndex += 5
+            }else{
+                opts.error()
+            }
+            ajaxLock =false
+          }   
+        }
+        var query = ''
+        for(key in opts.data){
+            query += (key + '=' +opts.data[key] + '&')
+        }
+        query = query.substr(0,query.length-1)        
+        xhr.open(opts.type,opts.url+'?' + query,true )
+        xhr.send()
+        ajaxLock = true        
+
+
+     }
+     function render(news){
+        var html = ''
+        for(let i =0 ; i<news.length ; i++){
+          html += '<li>'+ news[i] + '</li>'
+        }
+        ct.innerHTML += html            
+      
+        
+     }
+
+    
+
+</script>
+
+</html>
