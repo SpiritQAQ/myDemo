@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="UTF-8">
+  <title>jQ Ajax实现加载更多</title>
+  <style>
+    *{margin:0;padding : 0;text-decoration: none;
+}
+    #ct li{
+      border : 1px solid #666;
+      padding :20px 20px ; 
+      margin : 10px auto ;
+      background-color:#aaa ;
+      color: white; 
+      width : 500px ;
+      border-radius: 5px;
+    }
+    #load-more{
+      display: block;
+      border:1px solid orangered;
+      border-radius: 3px;
+      text-align: center;
+      width:70px;
+      height:45px;
+      line-height:45px;
+      margin : 0 auto ;
+      padding : 0 15px ;
+      color :#444 ;
+    }
+    #load-more:hover{
+      color:orangered;
+    }
+    #load-more img{
+      height: 100%;
+    }
+    
+
+  </style>
+</head>
+<body>
+   <ul id="ct">
+     <li>内容1</li>
+     <li>内容2</li>
+   </ul>
+   <a id="load-more" href ='javascript:void(0)' class = 'btn'><!--void(0就是undefined)，点击a执行一个空语句，防止点击跳转。-->
+     加载更多
+   </a>
+   
+</body>
+<script>
+     var pageIndex = 2
+     var ajaxLock = false
+     $('#load-more').on('click',function(){
+       if($(this).data('isloading')){
+         return 
+       }
+       $(this).data('isloading',true).html('<img src = "http://jrgzuoye.applinzi.com/%E4%BD%9C%E4%B8%9A%E5%AE%89%E6%8E%92/jscode/JS9-jqueryajax/loading.gif">')
+       $.ajax({
+          url : '/loadMore',
+          method: 'get',
+          data:{
+            index : pageIndex,
+            length : 5
+          },
+          success: function(data){
+            onSuccess(data)
+          }
+          ,
+          error: function(){
+            onError()
+          }
+       })
+      function onSuccess(ret){
+          $('#load-more').data('isloading',false).text('加载更多')
+          for(let i =0 ; i<ret.length ; i++){
+              $('#ct').append($('<li>' + ret[i] +'</li>')) 
+          }
+          pageIndex +=5
+      }
+      function onError(){
+        alert('error')
+        $('#load-more').data('isloading',false).text('加载更多')
+      }
+     })
+    
+
+
+    
+      
+</script>
+
+</html>
