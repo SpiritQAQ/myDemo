@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>图片的懒加载</title>
+  <style>
+    *{padding : 0 ;margin:0;list-style:none}
+    .container{
+      /* border:1px solid red; */
+      width:px;
+      margin:0 auto;
+      width:1100px;
+    }
+    .clearfix:after{
+      content:'';
+      display:block;
+      clear:both;
+    }
+    li{
+      float:left;
+      height:180px;
+      width:320px;
+      /* border:1px solid; */
+      margin: 100px 20px 400px;
+      box-shadow: 0 15px 12px 1px #aaa;
+      
+    }
+    img{
+      height:100%;
+      width:100%
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+      <ul class = clearfix>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129044&di=068e9150c0bf846414d10fb74f6e8a31&imgtype=0&src=http%3A%2F%2Fg.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fa686c9177f3e670917a0a9e43dc79f3df8dc550d.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129045&di=f1e36d73c7c78d639dc03b3e94d49d1b&imgtype=0&src=http%3A%2F%2Fwww.dnaob.com%2Fuploads%2Fallimg%2F150625%2F1-150625195106.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129044&di=3b230fa0512f379e648f8b3c787c781d&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fb17eca8065380cd7f4d69317a144ad345882817b.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=e996e2b2b3bc03a483115f84f764fcf1&imgtype=0&src=http%3A%2F%2Fimg2.duitang.com%2Fuploads%2Fitem%2F201201%2F06%2F20120106171759_Gm3V2.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=d8e08fa4344729dc9d2fe034048f9cd9&imgtype=0&src=http%3A%2F%2Fimg3.duitang.com%2Fuploads%2Fitem%2F201407%2F08%2F20140708160529_Ca4YK.jpeg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=ae7e7458ea58f7473c3da88a873fb879&imgtype=0&src=http%3A%2F%2Fimgstore.cdn.sogou.com%2Fapp%2Fa%2F100540002%2F478373.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=9a81c449cc593017f9f8ad6430c945c4&imgtype=0&src=http%3A%2F%2Fi1.17173cdn.com%2F2fhnvk%2FYWxqaGBf%2Fcms3%2FXQErzzblgquvafc.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129041&di=9a0a0b1d50838dd542b707608c1c3098&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F54fbb2fb43166d22f6485f3f462309f79052d25a.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129041&di=e85c523dc67af4fae87b2ca77479ba3b&imgtype=0&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2F6550bb29a96ee958019954456ab18329a630781b.jpg'></li>
+      </ul>
+    </div>
+    <div class="container">
+      <ul class = clearfix>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129040&di=ae271177f0c6894c650d82e01300b43d&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2Fc8177f3e6709c93ddeb12b669f3df8dcd00054db.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129036&di=202495095d04f295e05fad3722911e12&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F7e8e357f9e2f07087d98a6ace924b899a801f252.jpg%3Fv%3Dtbs'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129035&di=b57eb979bd2aa405bd6dbfe824fd09f5&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2Fd53f8794a4c27d1e65df15611bd5ad6edcc4389d.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685639756&di=fa2dc825347de2b08c9ac25cce3afcd7&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F962bd40735fae6cdd8ccded80fb30f2442a70f0a.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685639755&di=0ea24aa048d83bbf36435cda5f9c32ac&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2Fd9c28fd450e2319730add123.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685742933&di=f62a1e608a4989a103cdc587c1e73c8a&imgtype=0&src=http%3A%2F%2Ff5.topitme.com%2F5%2F3b%2Fc7%2F1166899144bedc73b5o.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685760042&di=b851a827c7870b44ef02e65b59353ce7&imgtype=0&src=http%3A%2F%2Fm.niusnews.com%2Fupload%2Fimgs%2Fdefault%2F15JanT%2Fbsetpolicy%2F6.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685760040&di=8e50b03a1754649616719391ac00296c&imgtype=0&src=http%3A%2F%2Fphoto.tp88.net%2Fupfile%2F201411%2F9%2F2014119424-5918766.jpg'></li>
+        <li><img src="" alt="" src-data='https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685760026&di=5b30ca4d38fa1ad6c9fa778de6960a0b&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fpic%2Fitem%2F0947282943dcc8a199250a85.jpg'></li>        
+      </ul>
+    </div>    
+    <script>
+      showImg($('img')) //将直接能看到的img渲染
+      $(window).on('scroll', function() {
+        showImg($('img'))
+      })
+      function isVisible($node) {
+        var offsetTop = $node.offset().top
+        var scrollTop = $(window).scrollTop()
+        var nodeHeight = $node.outerHeight()
+        var windowHeight = $(window).height()
+        if (scrollTop > (offsetTop - windowHeight) && scrollTop < (offsetTop + nodeHeight)) {
+          return true
+        } else {
+          return false
+        }
+      }
+
+      function showImg($node) {
+        $node.not('.showed').each(function() {
+          if (isVisible($(this))) {
+            var src = $(this).attr('src-data')
+            $(this).attr('src', src).addClass('showed')
+          }
+        })
+      }
+    </script>
+</body>
+</html>
