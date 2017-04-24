@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>跨域jsonp</title>
+  <style>
+    *{margin:0;padding : 0;text-decoration: none;
+}
+    #ct li{
+      border : 1px solid #666;
+      padding :20px 20px ; 
+      margin : 10px auto ;
+      background-color:#aaa ;
+      color: white; 
+      width : 500px ;
+      border-radius: 5px;
+    }
+    #load-more{
+      display: block;
+      border:1px solid orangered;
+      border-radius: 3px;
+      text-align: center;
+      width:70px;
+      margin : 0 auto ;
+      padding : 10px 15px ;
+      color :#444 ;
+    }
+    #load-more:hover{
+      background-color: green;
+      color:white;
+    }
+    
+
+  </style>
+</head>
+<body>
+   <ul id="ct">
+     <li>内容1</li>
+     <li>内容2</li>
+   </ul>
+   <a id="load-more" href ='javascript:void(0)' class = 'btn'><!--void(0就是undefined)，点击a执行一个空语句，防止点击跳转。-->
+     加载更多
+   </a>
+   
+</body>
+<script>
+     //允许用户传递一个callback参数给服务端，然后服务端返回数据时会将这个callback参数作为函数名来包裹住JSON数据
+     //这样客户端就可以随意定制自己的函数来自动处理返回数据了。
+     var btn = document.getElementById('load-more')
+     var ct = document.getElementById('ct')
+     var pageIndex = 2
+     btn.addEventListener('click',function(){
+        var script = document.createElement('script')
+        script.src = 'http://kuayu1.com:8080/loadMore?index='+ pageIndex + '&length=5&callback=appendHtml' 
+                        //将函数名传给router.js，后端生成script标签的内容，内容是appendHtml(['内容1','内容2','内容3','内容4','内容5'])
+        console.log(script)
+        document.head.appendChild(script)
+        document.head.removeChild(script)
+        pageIndex += 5
+     })
+       function appendHtml(results){           //callback函数          
+            var html =''
+            for(let i =0 ; i<results.length ; i++){
+                html += '<li>'+ results[i] + '</li>'
+            }
+            console.log(html)
+            ct.innerHTML += html 
+        }
+
+
+    
+
+</script>
+
+</html>

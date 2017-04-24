@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻列表懒加载</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <style>
+        *{
+            margin:0;padding :0;list-style: none;text-decoration:  none;
+        }
+        .container{
+            width:700px;
+            margin:0 auto;
+            text-align: center;
+        }
+        #ct h3{
+            margin:20px auto;
+            width:150px;
+
+        }
+        #ct li{
+            border : 1px solid #eee;    
+            padding :20px 20px ; 
+            margin : 20px auto ;
+            background-color:#eee ;
+            max-width : 500px ;
+            border-radius: 5px;
+            height:100px;
+            text-align: left
+        }
+        #load-more{
+            display: block;
+            border:1px solid orangered;
+            border-radius: 3px;
+            text-align: center;
+            width:70px;
+            height:45px;
+            line-height:45px;
+            margin : 0 auto ;
+            padding : 0 15px ;
+            color :#444 ;
+        }
+        #load-more:hover{
+            color:orangered;
+        }
+        #load-more img{
+            height: 100%;
+        }
+        .item a{
+            color:black
+        }
+        .img-box{
+            float:left;
+            
+
+        }
+        .img-box img{
+            height:100px;
+            width:110px
+        }
+        .item a h2{
+            font-size : 1.2em;
+            margin-left :  120px;
+        }
+        .item a p{
+            font-size :0.8em;
+            margin: 20px 0 0 120px;
+            color: #888
+        }
+        .clear-fix::after{
+            content:'';
+            clear:both;
+            display:block;
+        }
+        .load-more{
+            margin:0 auto;
+            
+        }
+    </style>
+</head>
+<body> 
+    <div class="container">   
+        <ul id="ct">
+
+
+        </ul>
+        <p class = load-more>loading...</p>
+    </div>         
+    <script>
+        var pageIndex = 0
+        var isOver = false
+        var isDataArrived = true 
+        getNews()
+
+        $(window).on('scroll',checkNews)
+        function checkNews(){
+            if(isVisible( $('.load-more')) && !isOver && isDataArrived ){
+                getNews()
+            }   
+        }
+        function getNews(){
+            isDataArrived = false
+            $.get('/getNews',{page:pageIndex}).done(function(ret){
+               isDataArrived = true
+               if(ret.status ===0){
+                    appendHtml(ret)
+                    pageIndex++
+                    checkNews()
+               }else{
+                   alert('获取新闻出错')
+               }
+               }).fail(function(){
+                   alert('error!')
+            })
+        }
+        function isVisible($node) {
+            var offsetTop = $node.offset().top
+            var scrollTop = $(window).scrollTop()
+            var nodeHeight = $node.outerHeight()
+            var windowHeight = $(window).height()
+            if (scrollTop > (offsetTop - windowHeight) && scrollTop < (offsetTop + nodeHeight)) {
+                return true
+            } else {
+                return false
+            }
+        }
+        function appendHtml(ret){
+            if(ret.data.length === 0){
+                isOver = true 
+                $('#ct').append('<h3>没有更多数据</h2>')
+                $('.load-more').remove()
+                return 
+            }
+           console.log(ret.data)
+           var html = ''
+           console.log(ret.data.length)
+           $.each(ret.data,function(){
+               html += '<li class = item><a href="'+this.link+'">'  
+               html += '<div class = img-box><img src="'+this.img+'"></div>'
+               html += '<h2>'+ this.title + '</h2>'
+               html += '<p>' + this.brif + '</p>'
+               html += '</a></li>'
+
+           })
+           $('#ct').append(html)           
+
+        }
+    </script>
+    
+</body>
+</html>

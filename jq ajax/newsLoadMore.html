@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻列表加载</title>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <style>
+        *{
+            margin:0;padding :0;list-style: none;text-decoration:  none;
+        }
+        #ct h3{
+            margin:20px auto;
+            width:150px;
+
+        }
+        #ct li{
+            border : 1px solid #eee;    
+            padding :20px 20px ; 
+            margin : 20px auto ;
+            background-color:#eee ;
+            max-width : 500px ;
+            border-radius: 5px;
+            height:100px;
+        }
+        #load-more{
+            display: block;
+            border:1px solid orangered;
+            border-radius: 3px;
+            text-align: center;
+            width:70px;
+            height:45px;
+            line-height:45px;
+            margin : 0 auto ;
+            padding : 0 15px ;
+            color :#444 ;
+        }
+        #load-more:hover{
+            color:orangered;
+        }
+        #load-more img{
+            height: 100%;
+        }
+        .item a{
+            color:black
+        }
+        .img-box{
+            float:left;
+            
+
+        }
+        .img-box img{
+            height:100px;
+            width:110px
+        }
+        .item a h2{
+            font-size : 1.2em;
+            margin-left :  120px;
+        }
+        .item a p{
+            font-size :0.8em;
+            margin: 20px 0 0 120px;
+            color: #888
+        }
+        .clear-fix::after{
+            content:'';
+            clear:both;
+            display:block;
+        }
+        
+    </style>
+</head>
+<body>    
+    <ul id="ct">
+     <li class = item>
+         <a href="http://xw.qq.com/mil/20160830028700/MIL2016083002870002" class = 'clear-fix'>
+            <div class= 'img-box '>
+                <img src='http://inews.gtimg.com/newsapp_ls/0/531644649_150120/0'></img>
+            </div>
+            <h2>韩促朝停止诋毁韩国元首 批其丧失最基本礼仪常识</h2>
+            <p>韩促朝停止诋毁韩国元首 批其丧失最基本礼仪常识</p>
+         </a>
+     </li>
+     <li class = item>
+         <a href="http://xw.qq.com/mil/20160830028700/MIL2016083002870002">
+            <div class= img-box>
+                <img src='http://inews.gtimg.com/newsapp_ls/0/531644649_150120/0'>
+            </div>
+            <h2>韩促朝停止诋毁韩国元首 批其丧失最基本礼仪常识</h2>
+            <p>韩促朝停止诋毁韩国元首 批其丧失最基本礼仪常识</p>
+         </a>
+     </li>
+    </ul>
+    <a id="load-more" href="javascript:void(0)" class="btn">
+     加载更多
+    </a>  
+    <script>
+        var pageIndex = 0
+        var isOver = false
+        var isDataArrived = true 
+        $('#load-more').on('click',function(){           
+            $.get('/getNews',{page:pageIndex}).done(function(ret){
+               if(ret.status ===0){
+                    isDataArrived = true
+                    appendHtml(ret)
+                    pageIndex+=1
+               }else{
+                   alert('获取新闻出错')
+               }
+			   }).fail(function(){
+                  	 alert('error!')
+            })
+        })
+        function appendHtml(ret){
+            if(ret.data.length === 0){
+                isOver = true 
+                $('#ct').append('<h3>没有更多数据</h2>')
+                $('#load-more').remove()
+                return 
+            }
+           console.log(ret.data)
+           var html = ''
+           console.log(ret.data.length)
+           $.each(ret.data,function(){
+               html += '<li class = item><a href="'+this.link+'">'  
+               html += '<div class = img-box><img src="'+this.img+'"></div>'
+               html += '<h2>'+ this.title + '</h2>'
+               html += '<p>' + this.brif + '</p>'
+               html += '</a></li>'
+
+           })
+           $('#ct').append(html)           
+
+        }
+    </script>
+    
+</body>
+</html>
