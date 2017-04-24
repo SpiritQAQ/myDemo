@@ -11,8 +11,9 @@ app.get('/loadMore',function(req,res){
 	for(var i = 0; i<len ; i++){
 		data.push('内容' + (parseInt(idx)+i+1));
 	}
+	res.header('Access-Control-Allow-Origin','*');
 	res.send(data);
-	// res.header('Access-Control-Allow-Origin','http://kuayu2.com:8080');
+	
 }); 
  
 

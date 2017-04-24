@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Ajax实现加载更多</title>
+  <title>cors实现跨域</title>
   <style>
     *{margin:0;padding : 0;text-decoration: none;
 }
@@ -76,7 +76,7 @@
     
         
 
-        xhr.open('get','loadMore?index='+ pageIndex +'&length=5',true )
+        xhr.open('get','http://kuayu1.com:8080/cors.html/haha?index='+ pageIndex +'&length=5',true )
         xhr.send()
         ajaxLock = true
      })
