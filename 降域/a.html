@@ -33,15 +33,16 @@
   <div class="ct">
     <h1>使用降域实现跨域</h1>
     <div class="main">
-      <input type="text" placeholder="http://kuayu1.com:8080/a.html">
+      <input type="text" placeholder="http://a.hahaha.com:8080/a.html">
     </div>
-    <iframe src="http://kuayu2.com:8080/b.html" frameborder="0" ></iframe>
+    <iframe src="http://b.hahaha.com:8080/b.html" frameborder="0" ></iframe>
   </div>
   <script>
   document.querySelector('.main input').addEventListener('input', function(){
+    console.log(this.value)
     window.frames[0].document.querySelector('input').value = this.value;
   })
-  document.domain = "ji.com"
+  document.domain = "hahaha.com"
   </script>
 </body>
 </html>

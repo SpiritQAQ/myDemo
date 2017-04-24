@@ -15,12 +15,12 @@
     </style>
 </head>
 <body>
-    <input id="input" type="text"  placeholder="http://kuayu2.com:8080/b.html">
+    <input id="input" type="text"  placeholder="http://b.hahaha.com:8080/b.html">
     <script>
     document.querySelector('#input').addEventListener('input', function(){
         window.parent.document.querySelector('input').value = this.value;
     })
-   
+     document.domain = "hahaha.com"
     </script>
 </body>
 </html>
