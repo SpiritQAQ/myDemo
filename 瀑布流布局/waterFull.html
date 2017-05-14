@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>瀑布流布局</title>
+  <style>
+    *{margin:0;padding:0;}
+    .content{
+      position: relative;
+    }
+    .item{
+      width:200px;
+      margin:15px 0 0 15px ;
+      transition:all 1s;
+      position:absolute;
+      box-shadow: 5px 5px 5px #ccc
+    }
+    .h1{
+      background-color: #aaa;
+      height:200px;
+    }
+    .h2{
+      background-color: #cf1;
+      height:300px;
+    }
+    .h3{
+      background-color: #fc1;
+      height:400px;
+    }
+    .h4{
+      background-color: #ab9;
+      height:500px;
+    }
+    .h5{
+      background-color: blue;
+      height:250px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+    <div class="item h1">1</div>
+    <div class="item h4">2</div>
+    <div class="item h3">3</div>
+    <div class="item h2">4</div>
+    <div class="item h5">5</div>
+    <div class="item h4">6</div>
+    <div class="item h3">7</div>
+    <div class="item h1">8</div>
+    <div class="item h3">9</div>
+    <div class="item h5">10</div>
+    <div class="item h2">11</div>
+    <div class="item h3">12</div>
+    <div class="item h5">13</div>
+    <div class="item h2">14</div>
+    <div class="item h5">15</div>
+    <div class="item h3">16</div>
+    <div class="item h1">17</div>
+    <div class="item h2">18</div>
+  </div>
+  <script>
+    waterFull()
+    
+    $(window).on('resize',waterFull)
+  
+    function waterFull(){
+      var colNum = parseInt($('.content').width()/$('.item').width())
+      var itemArr = []
+      for(let i=0 ; i<colNum ; i++){
+         itemArr[i] = 0
+      }
+      
+      $('.item').each(function(){
+         var minValue = Math.min.apply(null,itemArr)
+         var minIndex = itemArr.indexOf(minValue)
+         $(this).css({
+           top : minValue,
+           left : minIndex * $(this).outerWidth(true)
+         })
+         
+         itemArr[minIndex] += $(this).outerHeight(true)
+      })
+    }
+  </script>
+</body>
+
+</html>
