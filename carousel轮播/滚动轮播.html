@@ -121,7 +121,7 @@
         <a href="javascript:void(0)" class="btn btn-right">&gt;</a>
         <div class="nav-box">
           <ul class='nav clear-fix'>
-            <li class=a ctive></li>
+            <li class=active></li>
             <li></li>
             <li></li>
             <li></li>
@@ -152,6 +152,7 @@
        
 
     });
+    autoPlay()
 
     function playNext(){
        if(isAnimate){
@@ -168,6 +169,8 @@
        }
         isAnimate = false
         navActive()
+        stopAuto()
+        autoPlay()//重置自动翻页时间          
       })  
 
     }
@@ -188,7 +191,16 @@
        }
          navActive()
          isAnimate = false 
+         stopAuto()
+         autoPlay()//重置自动翻页时间  
       })         
+    }
+    function autoPlay(){
+      clock = setInterval(function(){
+        playNext()},3000)
+    }
+    function stopAuto(){
+      clearInterval(clock)
     }
     $('.nav li').on('click',function(){
       var index = $(this).index()

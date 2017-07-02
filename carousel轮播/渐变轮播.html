@@ -115,7 +115,7 @@
         <a href="javascript:void(0)" class="btn btn-right">&gt;</a>
         <div class="nav-box">
           <ul class='nav clear-fix'>
-            <li class=a ctive></li>
+            <li class=active></li>
             <li></li>
             <li></li>
             <li></li>
@@ -135,7 +135,7 @@
 
 
 
-
+    autoPlay()
     $('.btn-left').on('click',function(){
 
         play(imgPage-1)
@@ -170,7 +170,13 @@
         isAnimate = false        
       })                                        
     }
-
+    function autoPlay(){
+      clock = setInterval(function(){
+        play(imgPage+1)},3000)
+    }
+    function stopAuto(){
+      clearInterval(clock)
+    }
     
     $('.nav li').on('click',function(){
       var index = $(this).index()   
