@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://js.jirengu.com
+
+Copyright (c) 2017 by anonymous (http://js.jirengu.com/ridibitupi/2/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>JS Bin</title>
+<style id="jsbin-css">
+*{padding :0;margin:0}
+.img-preview{
+  width:1000px;
+  margin : 50px auto;
+  
+}
+.img-box{
+  float:left;
+  
+}
+.img-row::after{
+  content:'';
+  display: block;
+  clear: both;
+}
+.img-row{
+  margin-bottom:30px;
+}
+</style>
+</head>
+<body>
+  <div class="img-preview"></div>
+<script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+
+<script id="jsbin-javascript">
+function Barrel($ct){
+  this.$ct = $ct
+  this.rowList = []
+  this.loadImg()
+ 
+}
+Barrel.prototype = {
+  loadImg : function(){
+    var _this = this
+    var imgs = this.getImgUrls(30)
+    for(var i = 0;i<imgs.length;i++){
+      var img = new Image()
+      img.src = imgs[i]
+      img.onload = function(){
+        var imgInfo = {
+          target :this,
+          height:120,
+          width:(this.width/this.height)*120
+        }
+//         console.log(this)
+//         console.log(imgs)
+//         console.log(img)
+//         console.log(imgInfo)
+        _this.render(imgInfo)
+      }
+    }
+  },
+  getImgUrls : function(num){
+    var color ,width ,height ,urls = []
+    for(var i =0; i<num ; i++){
+      color = Math.random().toString(16).substring(2,8)
+      width = Math.floor(Math.random()*100+50)
+      height = Math.floor(Math.random()*30+50)
+      urls.push('https://placehold.it/'+ width + 'x' + height + '/' +color +'/fff' )
+    }
+    return urls
+  },
+  render : function(imgInfo){
+    var containerWidth = this.$ct.width()
+    var imgCtHeight = 0 
+    var rowWidth = 0
+    var lastWidth 
+    this.rowList.push(imgInfo)
+    for(var i=0 ; i<this.rowList.length;i++){
+      rowWidth += this.rowList[i].width
+      lastWidth = this.rowList[i].width
+    }
+    if(rowWidth > containerWidth){
+      console.log(rowWidth)
+      this.rowList.pop()
+      rowWidth -= lastWidth
+      imgCtHeight = 120*containerWidth/rowWidth    
+      this.layout(imgCtHeight)
+      this.rowList = []
+    }
+
+    
+  },
+  layout : function(imgCtHeight){
+    var $rowCt = $('<div class=img-row></div>')
+    $.each(this.rowList , function(idx,imgInfo){
+      var $imgCt = $('<div class=img-box></div>')
+      var $img = $(imgInfo.target)
+      console.log($img)
+      $img.height(imgCtHeight)
+//       $img.width(imgInfo.width/200*imgCtHeight)
+ 
+//       console.log($img)
+      $imgCt.append($img)
+      $rowCt.append($imgCt)
+    })
+    this.$ct.append($rowCt)
+  }
+}
+new Barrel($('.img-preview'))
+</script>
+</body>
+</html>
