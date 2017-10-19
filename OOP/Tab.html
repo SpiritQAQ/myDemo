@@ -96,12 +96,12 @@
   this.init()
   this.tabind()
   }
-Tab.prototype.init = function(){
+  Tab.prototype.init = function(){
   console.log(this)
   this.$header = this.$node.find('.tab-header')
   this.$content = this.$node.find('.tab-container')  
   }
-Tab.prototype.tabind = function(){
+  Tab.prototype.tabind = function(){
   var _this = this
   this.$header.on('click',function(e){
     var idx = $(e.target).index()
