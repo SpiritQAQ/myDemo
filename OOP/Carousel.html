@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>jq滚动轮播Carousel</title>
+  <style>
+    *{margin:0;padding:0;list-style:none;text-decoration:none;}
+    .clear-fix::after{
+      content:'';
+      display:block;
+      clear:both;
+    }
+    .carousel{
+      overflow:hidden;
+      position:relative;
+      width:320px;
+      height:180px;
+      
+    }
+    .img-ct{
+      position:absolute;
+      width:2000px;
+      left:-320px;
+    }
+    .img-box{
+      /* border:1px solid  */;
+      float:left;
+      position:relative;
+    }
+    .img-box a{
+      display:block;
+    }
+    .img-box img{
+      width:320px;
+      height:180px;
+      /* border:1px solid */
+      
+    }
+    .btn{
+      position:absolute;
+      text-align: center;
+      width:30px;
+      height:30px;
+      color:white;
+      background-color: #333;
+      border-radius:30px;
+      opacity: 0.9;
+      top:75px;
+      line-height:30px;
+      transition:box-shadow 0.75s ;    
+    }
+    .btn-left{
+      left:10px;
+    }
+    .btn-right{
+      left:280px;
+    }
+    .btn:hover{
+      box-shadow:0 0 10px 5px #eee;
+    
+    }
+    .nav{
+      display:inline-block;
+    }
+    .nav>li{
+      float:left;
+      display:inline-block;
+      height:5px;
+      width:20px;
+      background-color: white;
+      margin:0 5px;
+      border-radius:5px;
+      opacity: 0.9;
+      
+    }
+    .nav-box{
+      text-align: center;
+      position: absolute;
+      bottom:20px;
+      width:320px;      
+    }
+    .nav .active{
+      background:#666;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="carousel">
+    <ul class='img-ct clear-fix'>
+      <li class="img-box" page=4>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685742933&di=f62a1e608a4989a103cdc587c1e73c8a&imgtype=0&src=http%3A%2F%2Ff5.topitme.com%2F5%2F3b%2Fc7%2F1166899144bedc73b5o.jpg" alt="">
+        </a>
+      </li>
+      <li class="img-box" page=1>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=e996e2b2b3bc03a483115f84f764fcf1&imgtype=0&src=http%3A%2F%2Fimg2.duitang.com%2Fuploads%2Fitem%2F201201%2F06%2F20120106171759_Gm3V2.jpg" alt="">
+        </a>
+      </li>
+      <li class="img-box" page=2>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129044&di=3b230fa0512f379e648f8b3c787c781d&imgtype=0&src=http%3A%2F%2Ff.hiphotos.baidu.com%2Fzhidao%2Fpic%2Fitem%2Fb17eca8065380cd7f4d69317a144ad345882817b.jpg"
+          alt="">
+        </a>
+      </li>
+      <li class="img-box" page=3>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=9a81c449cc593017f9f8ad6430c945c4&imgtype=0&src=http%3A%2F%2Fi1.17173cdn.com%2F2fhnvk%2FYWxqaGBf%2Fcms3%2FXQErzzblgquvafc.jpg" alt="">
+        </a>
+      </li>
+      <li class="img-box" page=4>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685742933&di=f62a1e608a4989a103cdc587c1e73c8a&imgtype=0&src=http%3A%2F%2Ff5.topitme.com%2F5%2F3b%2Fc7%2F1166899144bedc73b5o.jpg" alt="">
+        </a>
+      </li>
+      <li class="img-box" page=1>
+        <a href="javascript:void(0)"><img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1492685129043&di=e996e2b2b3bc03a483115f84f764fcf1&imgtype=0&src=http%3A%2F%2Fimg2.duitang.com%2Fuploads%2Fitem%2F201201%2F06%2F20120106171759_Gm3V2.jpg" alt="">
+        </a>
+      </li>
+    </ul>
+    <a href="javascript:void(0)" class="btn btn-left">
+      <</a>
+        <a href="javascript:void(0)" class="btn btn-right">&gt;</a>
+        <div class="nav-box">
+          <ul class='nav clear-fix'>
+            <li class=active></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+  </div>
+  <script>
+    function carousel(){
+      this.init()
+      this.bind()
+      this.autoPlay()
+      this.navPlay()
+    }
+    
+    carousel.prototype.init = function(){
+      this.$imgCt = $('.img-ct')
+      this.$leftBtn = $('.btn-left')
+      this.$rightBtn = $('.btn-right')
+      this.$nav = $('.nav')
+      this.isAnimate = false
+      this.imgPage = 0
+      this.imgLength = this.$imgCt.children().length -2
+      this.$imgCt.width(this.$imgCt.find('li').eq(0).width() * this.$imgCt.children().length)
+    }
+    carousel.prototype.bind = function(){
+      var _this = this
+      this.$leftBtn.on('click',function(){
+         _this.playPre()
+       
+      })
+      this.$rightBtn.on('click', function() {
+         _this.playNext()
+     
+      })
+    }
+    carousel.prototype.playPre = function(){
+      var _this = this 
+      if(this.isAnimate){
+        return
+      }
+      this.isAnimate = true 
+      this.$imgCt.animate({
+        'left': "+=320"
+      }, 500,function(){    
+        
+        _this.imgPage --
+        console.log(_this.imgPage)
+       if(_this.imgPage <0){
+         _this.$imgCt.css('left','-1280px')
+         _this.imgPage = 3    
+      }
+         _this.navActive()
+         _this.isAnimate = false 
+         _this.stopAuto()
+         _this.autoPlay()//重置自动翻页时间  
+      })         
+    }
+    carousel.prototype.playNext = function(){
+      var _this = this
+      if(this.isAnimate){
+         return 
+      } 
+      this.isAnimate = true      
+      this.$imgCt.animate({
+        'left': "-=320"
+      }, 500,function(){
+        _this.imgPage ++
+       if(_this.imgPage===_this.imgLength){
+         _this.$imgCt.css('left','-320px')
+         _this.imgPage = 0
+      }
+        _this.isAnimate = false
+        _this.navActive()
+        _this.stopAuto()
+        _this.autoPlay()//重置自动翻页时间          
+      })  
+    }
+     carousel.prototype.autoPlay = function(){
+       var _this = this
+      clock = setInterval(function(){
+        _this.playNext()},3000)
+    }    
+    carousel.prototype.stopAuto = function(){
+        clearInterval(clock)
+    }
+    carousel.prototype.navPlay = function(){
+      var _this = this
+      $('.nav li').on('click',function(){
+      var index = $(this).index()
+      _this.$imgCt.animate({
+        left: -(index*320+320)
+        
+      },666,'linear',function(){
+        _this.imgPage = index
+        _this.navActive()
+      })
+    })
+    carousel.prototype.navActive = function(){
+      this.$nav.find('.active').removeClass('active')
+      this.$nav.children().eq(this.imgPage).addClass('active')
+    }
+    }
+    new carousel()
+    
+    
+/*    var $imgCt = $('.img-ct'),
+    $leftBtn = $('.btn-left'),
+    $rightBtn = $('.btn-right'),
+    $nav = $('.nav');
+    
+    var isAnimate = false
+    var imgPage = 0
+    var imgLength = $imgCt.children().length -2
+    $imgCt.width($imgCt.find('li').eq(0).width() * $imgCt.children().length)
+    $('.btn-left').on('click',function(){
+         playPre()
+         
+    })
+    $('.btn-right').on('click', function() {
+       playNext()
+       
+    });
+    autoPlay()
+    function playNext(){
+       if(isAnimate){
+         return 
+      } 
+      isAnimate = true      
+      $imgCt.animate({
+        'left': "-=320"
+      }, 500,function(){
+        imgPage ++
+       if(imgPage===imgLength){
+         $imgCt.css('left','-320px')
+         imgPage = 0
+       }
+        isAnimate = false
+        navActive()
+        stopAuto()
+        autoPlay()//重置自动翻页时间          
+      })  
+    }
+    function playPre(){
+      if(isAnimate){
+        return
+      }
+      isAnimate = true 
+      $imgCt.animate({
+        'left': "+=320"
+      }, 500,function(){    
+        
+        imgPage --
+        console.log(imgPage)
+       if(imgPage <0){
+         $imgCt.css('left','-1280px')
+         imgPage = 3    
+       }
+         navActive()
+         isAnimate = false 
+         stopAuto()
+         autoPlay()//重置自动翻页时间  
+      })         
+    }
+    function autoPlay(){
+      clock = setInterval(function(){
+        playNext()},3000)
+    }
+    function stopAuto(){
+      clearInterval(clock)
+    }
+    $('.nav li').on('click',function(){
+      var index = $(this).index()
+      $imgCt.animate({
+        left: -(index*320+320)
+        
+      },666,'linear',function(){
+        imgPage = index
+        navActive()
+      })
+    })
+    function navActive(){
+      $nav.find('.active').removeClass('active')
+      $nav.children().eq(imgPage).addClass('active')
+    }*/
+  </script>
+</body>
+
+</html>
