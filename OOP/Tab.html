@@ -90,7 +90,32 @@
     <li>内容3</li>
     <li>内容4</li>
   </ul>
-
+<script>
+  function Tab($node){
+  this.$node = $node
+  this.init()
+  this.tabind()
+  }
+Tab.prototype.init = function(){
+  console.log(this)
+  this.$header = this.$node.find('.tab-header')
+  this.$content = this.$node.find('.tab-container')  
+  }
+Tab.prototype.tabind = function(){
+  var _this = this
+  this.$header.on('click',function(e){
+    var idx = $(e.target).index()
+    console.log(this)
+    _this.$header.children().removeClass('li-active')
+    _this.$header.children().eq(idx).addClass('li-active')
+    _this.$content.children().removeClass('active')
+    _this.$content.children().eq(idx).addClass('active ')
+  })
+}
+var tab1 = new Tab($('.tab').eq(0))
+var tab2 = new Tab($('.tab').eq(1))
+new Tab($('.tab').eq(2))
+</script>
 </div>
 </body>
 </html>  
