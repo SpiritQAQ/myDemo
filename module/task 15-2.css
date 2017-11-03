@@ -43,16 +43,20 @@ h1+p{font-style: italic}
 }
 #header{
     text-align: center;
-    background: url('img/header-bg.jpg');
+    /* background: url('img/header-bg.jpg'); */
     height:100%;
     background-size: cover;
     width: 100%;
     color: white;
-    display: table;
+    position: relative;
 }
 .header-container{
-    display: table-cell;
-    vertical-align: middle;
+    position:absolute;
+    top:50%;  
+    left:50%;
+    margin-left:-464px;
+    margin-top:-120px;
+    z-index :2;
 }
 .header-container>p{
     font-size: 3em;
@@ -64,7 +68,7 @@ h1+p{font-style: italic}
     font-family: Arial,sans-serif;
     margin: 20px 0;
 }
-.btn{
+.btn-message{
     display: inline-block;
     font-family: Arial,sans-serif;
     padding: 20px 30px;
@@ -73,8 +77,9 @@ h1+p{font-style: italic}
     border-radius: 5px;
     font-weight: bold;
     color:white;
+    cursor: pointer;
 }
-.btn:hover{
+.btn-message:hover{
     background: #fec136;
 }
 .services{
@@ -127,7 +132,7 @@ h1+p{font-style: italic}
 }
 .portfolio-container{
     margin-top:70px;
-    padding-bottom: 140px;
+    padding-bottom: 80px;
 }
 .portfolio-box{
     float: left;
@@ -365,3 +370,88 @@ h1+p{font-style: italic}
     font-size: 13px;
     font-weight: bold;
 }
+#gotop{
+    border:1px solid #aaa;
+    padding :20px;
+    background-color : #ddd;
+    cursor: pointer;
+}
+.carousel{
+    overflow:hidden;
+    position:relative;
+    width:100%;
+    height:100%;
+
+  }
+  .img-ct{
+    position:absolute;
+    left:-1920px;
+    top:-70px;
+  }
+  .img-box{
+    /* border:1px solid  ;*/
+    float:left;
+   
+    
+    
+  }
+  .img-box a{
+    display:block;
+  }
+  .img-box img{
+    width:1920px;
+    height:1080px;
+    /* border:1px solid */
+    
+  }
+  .btn{
+    position:absolute;
+    text-align: center;
+    width:80px;
+    height:80px;
+    color:white;
+    background-color: #333;
+    border-radius:80px;
+    opacity: 0.5;
+    top:450px;
+    line-height:75px;
+    transition:box-shadow 0.75s ;  
+    font-size:50px;  
+  }
+  .btn-left{
+    left:10px;
+  }
+  .btn-right{
+    right:10px;
+  }
+  .btn:hover{
+    box-shadow:0 0 10px 5px #eee;
+  
+  }
+  .nav{
+    display:inline-block;
+  }
+  .nav>li{
+    float:left;
+    display:inline-block;
+    height:12px;
+    width:50px;
+    background-color: white;
+    margin:0 20px;
+    border-radius:12px;
+    opacity: 0.9;
+    
+  }
+  .nav-box{
+    text-align: center;
+    position: absolute;
+    bottom:30px;
+    width:100%;      
+  }
+  .nav .active{
+    background:#666;
+  }
+  .loadmore{
+      font-size:21px;
+      margin-bottom:40px;
+  }

@@ -32,8 +32,28 @@
     <div class="header-container">
         <p>Welcome To Our Studio!</p>
         <h1>IT'S NICE TO MEET YOU</h1>
-        <div class="header-btn"><a href="#" class="btn">TELL ME MORE</a></div>
+        <div class="header-btn"><a href="#" class="btn-message">TELL ME MORE</a></div>
     </div>
+    <div class='carousel'>
+        <ul class="img-ct clear-fix">
+            <li class="img-box" page=4><img src="./img/carousel/carousel4.jpg" alt=""></li>
+            <li class="img-box" page=1><img src="./img/carousel/carousel1.jpg" alt=""></li>
+            <li class="img-box" page=2><img src="./img/carousel/carousel2.jpg" alt=""></li>
+            <li class="img-box" page=3><img src="./img/carousel/carousel3.jpg   " alt=""></li>
+            <li class="img-box" page=4><img src="./img/carousel/carousel4.jpg" alt=""></li>
+            <li class="img-box" page=1><img src="./img/carousel/carousel1.jpg" alt=""></li>               
+        </ul>
+        <a href="javascript:void(0)" class="btn btn-left"><</a>
+        <a href="javascript:void(0)" class="btn btn-right">&gt;</a>
+        <div class="nav-box">
+            <ul class='nav clear-fix'>
+                <li class=active></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>    
+    </div>   
 </div>
 <div id="content">
     <div class="services layout">
@@ -93,6 +113,7 @@
                 <p>Website Design</p>
             </div>
         </div>
+        <div class="btn-message loadmore">Load More</div>
     </div>
     <div class="about">
         <h1>ABOUT</h1>
@@ -189,7 +210,7 @@
                 <textarea name="message" id="message" class="form-control " placeholder="YOUR MESSAGE *"></textarea>
             </div>
             <div>
-                <a href="#" class="btn ">SEND MESSAGE</a>
+                <a href="#" class="btn-message ">SEND MESSAGE</a>
             </div>
         </div>
     </div>
@@ -201,6 +222,7 @@
                 <a href="#"><i class="fa fa-linkedin icon" aria-hidden="true"></i></a></span>
     <span class="span3"><a href="#">Privacy Policy</a> &nbsp;&nbsp;<a href="#">Terms of Use</a></span>
 </div>
+<script data-main="./js/main" src="./js/lib/require.js"></script>
 
 </body>
 </html>
