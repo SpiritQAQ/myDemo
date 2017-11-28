@@ -41,6 +41,10 @@ h1+p{font-style: italic}
 .nav-list>ul>li>a:hover{
     color: #fed136;
 }
+.img-box img{
+    width:1920px;
+    height:1080px;    
+  }
 #header{
     text-align: center;
     /* background: url('img/header-bg.jpg'); */
@@ -145,22 +149,22 @@ h1+p{font-style: italic}
     padding-top: 20px;
 }
 .portfolio-photo1{
-    background: url("img/portfolio/roundicons.png") no-repeat ;
+    background: url("./img/portfolio/roundicons.png") no-repeat ;
 }
 .portfolio-photo2{
-    background: url("img/portfolio/startup-framework.png") no-repeat ;
+    background: url("./img/portfolio/startup-framework.png") no-repeat ;
 }
 .portfolio-photo3{
-    background: url("img/portfolio/treehouse.png") no-repeat ;
+    background: url("./img/portfolio/treehouse.png") no-repeat ;
 }
 .portfolio-photo4{
-    background: url("img/portfolio/golden.png") no-repeat ;
+    background: url("./img/portfolio/golden.png") no-repeat ;
 }
 .portfolio-photo5{
-    background: url("img/portfolio/escape.png") no-repeat ;
+    background: url("./img/portfolio/escape.png") no-repeat ;
 }
 .portfolio-photo6{
-    background: url("img/portfolio/dreams.png") no-repeat ;
+    background: url("./img/portfolio/dreams.png") no-repeat ;
 }
 .portfolio-photo{
     background-size: contain;
@@ -210,7 +214,7 @@ h1+p{font-style: italic}
 }
 .paragraph1-after,.paragraph2-after,.paragraph3-after,.paragraph4-after{
     float: left;
-    background:url(img/about/1.jpg) center top no-repeat;
+    background:url("./img/about/1.jpg") center top no-repeat;
     background-size: 100%;
     border: 10px solid #eee;
     border-radius: 50%;
@@ -226,17 +230,17 @@ h1+p{font-style: italic}
 }
 .paragraph2-after{
     float:right;
-    background: url(img/about/2.jpg) center top no-repeat;
+    background: url("./img/about/2.jpg") center top no-repeat;
     background-size: 100%;
     margin-right: 30px;
 }
 .paragraph3-after{
-    background: url(img/about/3.jpg) center top  no-repeat;
+    background: url("./img/about/3.jpg") center top  no-repeat;
     background-size: 100%;
 }
 .paragraph4-after{
     float:right;
-    background: url(img/about/4.jpg) center top no-repeat;
+    background: url("./img/about/4.jpg") center top no-repeat;
     background-size: 100%;
     margin-right: 30px;
 }
@@ -321,7 +325,7 @@ h1+p{font-style: italic}
     display: inline-block;
 }
 .contact{
-    background: url(img/map-image.png) center no-repeat;
+    background: url("./img/map-image.png") center no-repeat;
     text-align: center;
     padding-top:180px;
     padding-bottom: 140px;
@@ -400,9 +404,11 @@ h1+p{font-style: italic}
   }
   .img-box img{
     width:1920px;
-    height:1080px;
-    /* border:1px solid */
-    
+    height:1080px;    
+  }
+  .img-box{
+    width:1920px;
+    height:1080px;    
   }
   .btn{
     position:absolute;

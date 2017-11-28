@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin:0;padding:0}
+        body{
+            background-color:darkcyan
+        }
+        .container{
+            margin-top:30px;
+            padding-bottom:100px;
+            height:200px;
+        }
+        .loading1{
+            height:100px;
+            width:100px;
+            border:15px solid rgba(255,255,255,0.2);
+            border-top:15px solid #fff;
+            margin : 0 auto;
+            border-radius:50%;
+            animation:load1 3s linear infinite;
+        }
+        .loading2{
+            position:relative;
+            margin:100px auto;
+            width:10px;
+            height : 45px;
+            animation:load2 1s ease-in infinite ;
+            background: #fff;
+            animation-delay: 0.16s
+        }
+        .loading2:after,.loading2:before{
+            position:absolute;
+            height:45px;
+            width:10px;            
+            background:#fff;
+            animation:load2 1s ease-in infinite ;
+            content:'';              
+        }
+        .loading2:before{
+            animation-delay: 0s;
+            left:-14px;
+        }
+        .loading2:after{
+            animation-delay: 0.32s;
+            left:14px;
+        }
+        .loading3,.loading3:before,.loading3:after{
+            height:20px;
+            width:20px;
+            border-radius: 100%;
+            background: #fff;
+            animation:load3 1s ease-in infinite ;
+            content:''
+        }
+        .loading3{
+            position:relative;
+            margin:100px auto;
+            animation-delay: 0.2s
+        }
+        .loading3:before{
+            position:absolute;
+            left:-30px;
+            animation-delay: 0s
+        }
+        .loading3:after{
+            position:absolute;
+            left:30px;
+            animation-delay: 0.4s
+        }
+        @keyframes load1{
+            from { transform: rotate(0deg)}
+            to   { transform: rotate(360deg); }
+        }
+        @keyframes load2 {
+            0%,80%,100%{ box-shadow:0 0px #fff;height:40px;}
+            10%{box-shadow : 0 -15px #fff; height:50px;}
+        }
+        @keyframes load3 {
+            0%,100%{box-shadow: 0 }
+            30%{box-shadow : 0 0 20px #eee;}
+        }
+        @keyframes load4{
+            0%,100%{width:20px;height:20px; }
+            30%{width:30px;height:30px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading1">
+
+        </div>
+        <div class="loading2">
+            
+        </div>
+    </div>
+    <div class="loading3"></div>
+
+</body>
+</html>

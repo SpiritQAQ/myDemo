@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>css3Book</title>
+  <style>
+    *{margin:0;padding:0;list-style:none;}
+figure{
+  position:relative;
+  height:164px;
+  width:120px;
+  margin:100px;
+  perspective:1000px;
+  transform-style: preserve-3d;
+  /* backface-visibility:hidden; */
+  border-left:2px solid #777
+}
+.page-cover,.cover-back,.book-back{
+  position:absolute;
+  height:162px;
+  width:122px;
+  background: #ffdc00;
+  background: radial-gradient(circle at 60px 55px, yellow,orangered);
+  transform-origin : 0 50%;  /*轴位置*/
+  transform:rotateY(-40deg);
+  transition-duration:0.6s;
+  border-bottom:1px solid #999;
+  border-top:1px solid #999
+}
+.page-cover:after{
+  position:absolute;
+  top:0;
+  left:122px;
+  content:'';
+  height:162px;
+  border:1px solid #999;
+  background-color: #999;
+  
+}
+.cover-back{
+  width:124px;
+  background: #eee;
+  transform:rotateY(-39.9deg);  
+  border-top:1px solid #999
+}
+.book-back{
+  background:#eee;
+  width:130px;
+  transform:rotateY(10deg);
+  border:1px solid #999;
+}
+.page-cover p{
+  margin:40px auto;
+  width:50px;
+  font-size:30px;
+}
+
+.pages li{
+  position:absolute;
+  top:1px;
+  height:160px;
+  width:120px;
+  background-color: #fff;
+  border:1px solid #ccc;
+  transform-origin : 0 50%;
+  border-radius:2px;
+  
+}
+.pages>li:nth-child(1){
+  transform:rotateY(-32deg);
+  transition-duration:0.65s;
+}
+.pages>li:nth-child(2){
+  transform:rotateY(-25deg);
+  transition-duration:0.7s;
+}
+.pages>li:nth-child(3){
+  transform:rotateY(-18deg);
+  transition-duration:0.75s;
+}
+.pages>li:nth-child(4){
+  transform:rotateY(-11deg);
+  transition-duration:0.6s;
+}
+.pages>li:nth-child(5){
+  transform:rotateY(-4deg);
+  transition-duration:0.6s;
+}
+figure:hover .page-cover{
+  transform:rotateY(-130deg)
+}
+figure:hover .cover-back{
+  transform:rotateY(-129deg)
+}
+figure:hover .pages>li:nth-child(1){
+  transform:rotateY(-125deg)
+}
+figure:hover .pages>li:nth-child(2){
+  transform:rotateY(-120deg)
+}
+figure:hover .pages>li:nth-child(3){
+  transform:rotateY(-115deg)
+}
+figure:hover .pages>li:nth-child(4){
+  transform:rotateY(-33deg)
+}
+figure:hover .pages>li:nth-child(5){
+  transform:rotateY(-20deg)
+}
+
+  </style>
+</head>
+<body>
+  <figure>
+    <div class="page-cover">
+      <p>CSS</p>
+    </div>
+    <div class="cover-back"></div>
+    <ul class="pages">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li>hahahahahaha
+      r u ok?
+      Stewie2K
+      </li>
+      <li></li>
+    </ul>
+    <div class="book-back"></div>
+  </figure>
+</body>
+</html>
