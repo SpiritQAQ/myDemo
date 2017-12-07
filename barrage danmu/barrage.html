@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<meta name="robots" content="noindex">
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>barrage</title>
+<style id="jsbin-css">
+*{margin:0;padding:0;list-style:none;}
+.container{
+  position:relative;
+  width:800px;
+  height:450px;
+  margin:100px auto 20px auto;
+  border:1px solid ;
+  overflow:hidden;
+}
+.danmu {
+  position: absolute;
+  display:inline-block;
+  left: 100%;
+  font-size:22px;
+  line-height:25px;
+  height:25px;
+  white-space:pre;/*nowarp是强制不换行。生成的行内元素有空格会换行。pre是保留空格在字符串中*/
+  text-shadow: rgb(110, 110, 110) 1px 0px 1px, rgb(110, 110, 110) 0px 1px 1px, rgb(110, 110, 110) 0px -1px 1px, rgb(110, 110, 110) -1px 0px 1px;
+  font-weight:bold;
+  font-family: SimHei, "Microsoft JhengHei", Arial, Helvetica, sans-serif;
+/*   top:30px;
+  animation: danmu 5s linear 0.2s 1; */
+}
+.item{
+  height:20px;
+  width:40px;
+  
+}
+.input-con{
+  width:400px;
+  margin:0 auto;
+  height:35px;
+}
+input{
+  width:300px;
+  height:30px;
+  font-size:16px;
+  padding-left:10px;
+  
+}
+input:hover{
+  box-shadow:0px 0px 10px #87ceef;
+  border:2px solid #87ceef
+}
+.input-con button{
+  width:50px;
+  line-height:30px;
+}
+
+@keyframes danmu {
+  0% {
+    left: 100%;
+    transform: translateX(0);
+  }
+  100% {
+    left: -2%;
+    transform: translateX(-100%);
+
+  }
+}
+/* animation:danmu '+this.time+'s 0.1s linear forwards */
+
+
+</style>
+</head>
+<body>
+  <div class="container">
+<!--     <div class="danmu">2333</div> -->
+  </div>
+  <div class="input-con">
+    <input type="text" placeholder= '请在此输入弹幕' id='barrage-input' >
+    <button id='send'>发送</button>
+  </div>
+<script id="jsbin-javascript">
+var barrage = function(){
+  this.bind()
+}
+barrage.prototype={
+  init :function(){
+    this.text = $('#barrage-input').val()
+    this.top = Math.floor(Math.random()*105)*4
+    this.rgbr = Math.floor(Math.random()*200)
+    this.rgbg = Math.floor(Math.random()*200)
+    this.rgbb = Math.floor(Math.random()*200)
+    this.time = Math.floor(Math.random()*3+3)
+//     console.log(this.text)
+    
+  },
+  bind: function(){
+    var _this = this
+    $('#send').on('click',function(){
+      _this.play()
+      $('#barrage-input').val('')
+      _this.remove()
+      
+    })
+    $('#barrage-input').on('keypress',function(){
+       if(event.keyCode ==13){
+           _this.play();
+           $('#barrage-input').val('')
+           _this.remove()
+      }
+      
+    })
+  },
+  play: function(){
+    this.init()
+    var _this = this 
+    var html = '<div class="danmu" style="top:'+this.top+'px;animation:danmu '+this.time+'s 0.1s linear forwards;color:rgb('+this.rgbr+','+this.rgbg+','+this.rgbb+')"'+'>'+this.text+'</div>'
+    $('.container').append(html)
+    
+
+  },
+  remove:function(){
+    $('.danmu').each(function(index){
+      let num = parseInt($(this).css('left'))
+      if(num<0){
+        $(this).remove()
+      }
+    })
+  }
+}
+new barrage()
+  
+console.log($('#barrage-input').val())
+</script>
+</body>
+</html>
