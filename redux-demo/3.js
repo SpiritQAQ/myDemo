@@ -1,27 +1,20 @@
-function createStore(state, stateChanger) {
-  const listeners = []
-  const subscribe = (listener) => listeners.push(listener)
-  const getState = () => state
-  const dispatch = (action) => {
-    stateChanger(state, action)
-    listeners.forEach((listener) => listener())
-  }
-  return { getState, dispatch, subscribe }
-}
+
 
 function renderApp(appState) {
+  console.log("renderApp -> appState", JSON.parse(JSON.stringify(appState)))
   renderTitle(appState.title)
   renderContent(appState.content)
-  console.log('appState changed', appState)
 }
 
 function renderTitle(title) {
+  console.log('render title...')
   const titleDOM = document.getElementById('title')
   titleDOM.innerHTML = title.text
   titleDOM.style.color = title.color
 }
 
 function renderContent(content) {
+  console.log('render content...')
   const contentDOM = document.getElementById('content')
   contentDOM.innerHTML = content.text
   contentDOM.style.color = content.color
@@ -54,6 +47,17 @@ function stateChanger(state, action) {
   }
 }
 
+function createStore(state, stateChanger) {
+  const listeners = []
+  const subscribe = (listener) => listeners.push(listener)
+  const getState = () => state
+  const dispatch = (action) => {
+    stateChanger(state, action)
+    listeners.forEach((listener) => listener())
+  }
+  return { getState, dispatch, subscribe }
+}
+
 const store = createStore(appState, stateChanger)
 store.subscribe(() => renderApp(store.getState())) // 监听数据变化
 
@@ -63,7 +67,7 @@ store.dispatch({ type: 'UPDATE_TITLE_COLOR', color: 'green' }) // 修改标题�
 
 
 
-// function renderContent() {
-//   store.dispatch({ type: 'UPDATE_CONTENT_TEXT', text: 'This is new content' }) // 修改文本
-// }
-// setTimeout(() => renderContent(), 1000)
+function changeContent() {
+  store.dispatch({ type: 'UPDATE_CONTENT_TEXT', text: 'This is new content' }) // 修改文本
+}
+setTimeout(() => changeContent(), 1000)
