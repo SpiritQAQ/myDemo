@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>observe</title>
+</head>
+<p>在上面再封装一层 observer 。这个函数传入一个 value（需要「响应式」化的对象），通过遍历所有属性的方式对该对象的每一个属性都通过 defineReactive 处理。（注：实际上 observer
+  会进行递归调用，为了便于理解去掉了递归的过程）</p>
+
+<body>
+  <script>
+    var person = {
+      'name': 'sb',
+      age: 18,
+      sex: 'male'
+    }
+
+    function observer(value) {
+      if (!value || (typeof value !== 'object')) return
+
+      Object.keys(value).forEach(key => {
+        defineReactive(value, key, value[key])
+      })
+    }
+
+    function cb(val) {
+      console.log('视图更新了', val)
+    }
+
+    function defineReactive(obj, key, val) {
+      Object.defineProperty(obj, key, {
+        enumerable: true,
+        /* 属性可枚举 */
+        configurable: true,
+        /* 属性可被修改或删除 */
+        get: function reactiveGetter() {
+          console.log(`getting --- ${key}`, val)
+          return val; /* 实际上会依赖收集，下一小节会讲 */
+        },
+        set: function reactiveSetter(newVal) {
+          if (newVal === val) return;
+          cb(newVal)
+        }
+      });
+    }
+
+    class Vue {
+      constructor(options) {
+        this._data = options.data
+        observer(this._data)
+      }
+    }
+
+    let o = new Vue({
+      data: person
+    })
+    console.log("o ", o)
+  </script>
+
+</body>
+
+</html>

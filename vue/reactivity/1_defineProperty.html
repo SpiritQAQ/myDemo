@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var person = {
+      'name': 'sb'
+    }
+
+    function defineReactive(obj, key, val) {
+      Object.defineProperty(obj, key, {
+        enumerable: true,
+        /* 属性可枚举 */
+        configurable: true,
+        /* 属性可被修改或删除 */
+        get: function reactiveGetter() {
+          console.log('getting', val)
+          return val; /* 实际上会依赖收集，下一小节会讲 */
+        },
+        set: function reactiveSetter(newVal) {
+          if (newVal === val) return;
+          console.log('newVal', newVal);
+        }
+      });
+    }
+    defineReactive(person, 'name', 'dog')
+    console.log(person)
+    console.log(person.name)
+    person.name = 'cat'
+    console.log(person)
+  </script>
+</body>
+
+</html>
