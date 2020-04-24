@@ -44,19 +44,20 @@ function myPromise(executor) {
 myPromise.prototype.then = function (onFulfilled, onRejected) {
 
   var self = this
-  console.log("myPromise.prototype.then -> self", self)
   var promise2
-  console.log("myPromise.prototype.then -> self.status", self.status)
+  // console.log("myPromise.prototype.then -> self.status", self.status)
 
   // 根据标准，如果then的参数不是function，则我们需要忽略它，此处以如下方式处理
   onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (v) { }
   onRejected = typeof onRejected === 'function' ? onRejected : function (r) { }
 
   const resolvedHandler = function (resolve, reject) {
+    // 如果promise1(此处即为this/self)的状态已经确定并且是resolved，我们调用onFulfilled
+    // 因为考虑到有可能throw，所以我们将其包在try/catch块里
     try {
       var x = onFulfilled(self.data)
 
-      if (x instanceof myPromise) { // 如果onResolved的返回值是一个Promise对象，直接取它的结果做为promise2的结果
+      if (x instanceof myPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
         x.then(resolve, reject)
       }
       resolve(x) // 否则，以它的返回值做为promise2的结果
@@ -69,7 +70,7 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
   const rejectedHandler = function (resolve, reject) {
     try {
       var x = onRejected(self.data)
-      console.log("rejectedHandler -> self.data", self.data)
+
       if (x instanceof myPromise) {
         x.then(resolve, reject)
       }
@@ -79,8 +80,6 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
   }
 
   if (self.status === 'fulfilled') {
-    // 如果promise1(此处即为this/self)的状态已经确定并且是resolved，我们调用onResolved
-    // 因为考虑到有可能throw，所以我们将其包在try/catch块里
     return promise2 = new myPromise(function (resolve, reject) {
       resolvedHandler(resolve, reject)
     })
@@ -106,6 +105,8 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
         rejectedHandler(resolve, reject)
       })
     })
+    // console.log("myPromise.prototype.then -> self.onResolvedCallback", self.onResolvedCallback)
+
     console.log("myPromise.prototype.then -> is Pending -> promise2", promise2)
 
     return promise2
@@ -142,14 +143,18 @@ p.then((res) => {
     resolve('second')
   })
 })
-//   .then(second => {
-//     console.log(second)
-//   })
-//   .catch(err => console.log(err))
+  .then(second => {
+    console.log(second)
+  })
+  .catch(err => console.log(err))
 
 /**
- * 文字流程：
- * 1. var p = new Promise 调用constructor函数 -> 调用executor执行函数 -> 调用resolve或reject -> 改变实例的status和data callbackArray为空 -> 承诺完成
- * 2. 当调用p实例原型上的then的时候， 开始遵守承诺，走then的逻辑。
- * 首先因为是异步流程，在p的resolve没运行的时候，走then中的pending部分。
+ * 文字流程： (resolve和reject都用resolve表示行为，一个意思)
+ * 1. var p = new Promise 调用constructor函数 -> 调用executor执行函数 -> 调用resolve或reject -> 改变实例的status和data callbackArray为空 -> 说出承诺
+ * 2. 当调用p实例原型上的then的时候， 开始遵守承诺，走then的逻辑。then的返回值是一个promise对象。
+ * if 调用then的时候，状态已经是fulfilled的话，就直接new一个新的promise对象。这是调用构造函数会走处理handler函数。
+ * else 因为是异步流程，在p的resolve没运行的时候，走then中的pending部分。将处理resolve的函数推入实例的callBackArray中等待调用。
+ * 3. 继续else的流程，当resolve调用之时，状态改变，并且依次调用储存的callBack(handler)函数，在handler中会调用then的第一个参数就是(res)=>{}这部分。
+ * 4. handler/ 处理resolve / callBack函数 都指的同一个函数。 作用是如果then的第一个参数onFulfilled执行后的返回值是一个Promise对象，直接取他的结果作为pomise2的结果(then传递)，否则以他的返回值作为结果
+ *
  */
