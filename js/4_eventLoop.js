@@ -64,3 +64,10 @@ new Promise(resolve => {
   })
 
 console.log('script end')
+
+// await async2()
+// console.log('async1 end')
+// 相当于
+// Promise.resolve(async2()).then(() => {
+//   console.log('async1 end')
+// })
