@@ -8,6 +8,10 @@ function MyPromise(executor) {
   self.onRejectedCallback = [] // MyPromise reject时的回调函数集，因为在Promise结束之前有可能有多个回调添加到它上面
 
   function resolve(value) {
+    // if (value instanceof MyPromise) {
+    //   return value.then(resolve, reject)
+    // }
+    // setTimeout(() => {
     if (self.status === 'pending') {
       self.status = 'fulfilled'
       self.data = value
@@ -16,6 +20,8 @@ function MyPromise(executor) {
       }
 
     }
+    // })
+
 
 
   }
@@ -57,19 +63,17 @@ MyPromise.prototype.then = function (onFulfilled, onRejected) {
 
       try {
         var x = onFulfilled(self.data)
-        // console.log("resolvedHandler -> onFulfilled", onFulfilled)
-        // console.log("resolvedHandler -> x", x)
 
         if (x instanceof MyPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
           x.then(resolve, reject)
-        } else {
+        }
+        else {
           resolve(x) // 否则，以它的返回值做为promise2的结果
 
         }
-        // console.log("resolvedHandler -> resolve", resolve)
+
       } catch (e) {
         // 因为考虑到有可能throw，所以我们将其包在try/catch块里
-
         reject(e) // 如果出错，以捕获到的错误做为promise2的结果
       }
     });
@@ -133,7 +137,6 @@ MyPromise.prototype.catch = function (onRejected) {
 var a = 1
 
 var p = new MyPromise((resolve, reject) => {
-  console.log('promise constructor')
   if (a === 1) {
     setTimeout(() => {
       resolve(1)
@@ -148,7 +151,6 @@ var p = new MyPromise((resolve, reject) => {
   }
 })
 
-
 p.then((res) => {
   console.log('out', res)
   return new MyPromise(resolve => {
@@ -156,16 +158,15 @@ p.then((res) => {
   })
 })
   .then(second => {
-    console.log(second)
+    return (second + 1)
+  })
+  .then(third => {
+    console.log(third + 1)
   })
   .catch(err => console.log(err))
 
-p.then((res) => {
-  console.log('out2', res)
-  return new MyPromise(resolve => {
-    resolve('third')
-  })
-})
+
+
 /**
  * 文字流程： (resolve和reject都用resolve表示行为，一个意思)
  * 1. var p = new Promise 调用constructor函数 -> 调用executor执行函数 -> 调用resolve或reject -> 改变实例的status和data callbackArray为空 -> 说出承诺
