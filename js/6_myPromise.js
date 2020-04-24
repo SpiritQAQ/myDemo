@@ -1,11 +1,11 @@
 // 手写promise
 
-function myPromise(executor) {
+function MyPromise(executor) {
   var self = this
   self.status = 'pending' // Promise当前的状态
   self.data = undefined  // Promise的值
-  self.onResolvedCallback = [] // myPromise resolve时的回调函数集，因为在Promise结束之前有可能有多个回调添加到它上面
-  self.onRejectedCallback = [] // myPromise reject时的回调函数集，因为在Promise结束之前有可能有多个回调添加到它上面
+  self.onResolvedCallback = [] // MyPromise resolve时的回调函数集，因为在Promise结束之前有可能有多个回调添加到它上面
+  self.onRejectedCallback = [] // MyPromise reject时的回调函数集，因为在Promise结束之前有可能有多个回调添加到它上面
 
   function resolve(value) {
     if (self.status === 'pending') {
@@ -16,6 +16,7 @@ function myPromise(executor) {
       }
 
     }
+
 
   }
 
@@ -37,11 +38,11 @@ function myPromise(executor) {
   }
 }
 // then方法接收两个参数，onResolved，onRejected，分别为Promise成功或失败后的回调
-myPromise.prototype.then = function (onFulfilled, onRejected) {
+MyPromise.prototype.then = function (onFulfilled, onRejected) {
 
   var self = this
   var promise2
-  // console.log("myPromise.prototype.then -> self.status", self.status)
+  // console.log("MyPromise.prototype.then -> self.status", self.status)
 
   // 根据标准，如果then的参数不是function，则我们需要忽略它，此处以如下方式处理
   onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (value) { return value } // 如果不是function就把传进来的值再传出去，让promise的值得以穿透
@@ -56,11 +57,15 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
 
       try {
         var x = onFulfilled(self.data)
+        // console.log("resolvedHandler -> onFulfilled", onFulfilled)
+        // console.log("resolvedHandler -> x", x)
 
-        if (x instanceof myPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
+        if (x instanceof MyPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
           x.then(resolve, reject)
+        } else {
+          resolve(x) // 否则，以它的返回值做为promise2的结果
+
         }
-        resolve(x) // 否则，以它的返回值做为promise2的结果
         // console.log("resolvedHandler -> resolve", resolve)
       } catch (e) {
         // 因为考虑到有可能throw，所以我们将其包在try/catch块里
@@ -76,7 +81,7 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
       try {
         var x = onRejected(self.data)
 
-        if (x instanceof myPromise) {
+        if (x instanceof MyPromise) {
           x.then(resolve, reject)
         }
       } catch (e) {
@@ -87,13 +92,13 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
   }
 
   if (self.status === 'fulfilled') {
-    return promise2 = new myPromise(function (resolve, reject) {
+    return promise2 = new MyPromise(function (resolve, reject) {
       resolvedHandler(resolve, reject)
     })
   }
 
   if (self.status === 'rejected') {
-    return promise2 = new myPromise(function (resolve, reject) {
+    return promise2 = new MyPromise(function (resolve, reject) {
       rejectedHandler(resolve, reject)
     })
   }
@@ -103,7 +108,7 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
     // 只能等到Promise的状态确定后，才能确实如何处理。
     // 所以我们需要把我们的**两种情况**的处理逻辑做为callback放入promise1(此处即this/self)的回调数组里
     // 逻辑本身跟第一个if块内的几乎一致，此处不做过多解释
-    promise2 = new myPromise(function (resolve, reject) {
+    promise2 = new MyPromise(function (resolve, reject) {
       self.onResolvedCallback.push(function (value) {
         resolvedHandler(resolve, reject)
       })
@@ -112,63 +117,22 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
         rejectedHandler(resolve, reject)
       })
     })
-    console.log("myPromise.prototype.then -> self.onResolvedCallback", self.onResolvedCallback)
+    // console.log("MyPromise.prototype.then -> self.onResolvedCallback", self.onResolvedCallback)
 
-    console.log("myPromise.prototype.then -> is Pending -> promise2", promise2)
+    // console.log("MyPromise.prototype.then -> is Pending -> promise2", promise2)
 
     return promise2
 
   }
 }
 
-myPromise.prototype.catch = function (onRejected) {
+MyPromise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected)
-}
-
-function Promise(excutor) {
-  var self = this
-  self.onResolvedCallback = []
-  function resolve(value) {
-    setTimeout(() => {
-      self.data = value
-      self.onResolvedCallback.forEach(callback => callback(value))
-    })
-  }
-  excutor(resolve.bind(self))
-}
-Promise.prototype.then = function (onResolved) {
-  var self = this
-  return new Promise(resolve => {
-    self.onResolvedCallback.push(function () {
-      var result = onResolved(self.data)
-      if (result instanceof Promise) {
-        result.then(resolve)
-      } else {
-        resolve(result)
-      }
-    })
-  })
 }
 
 var a = 1
 
-var p = new myPromise((resolve, reject) => {
-  console.log('promise constructor')
-  if (a === 1) {
-    setTimeout(() => {
-      resolve(1)
-    }, 1000)
-
-  } else {
-
-    setTimeout(() => {
-      reject("It broke")
-
-    }, 1000)
-  }
-})
-
-var q = new Promise((resolve, reject) => {
+var p = new MyPromise((resolve, reject) => {
   console.log('promise constructor')
   if (a === 1) {
     setTimeout(() => {
@@ -187,20 +151,21 @@ var q = new Promise((resolve, reject) => {
 
 p.then((res) => {
   console.log('out', res)
-  return new myPromise(resolve => {
+  return new MyPromise(resolve => {
     resolve('second')
   })
 })
   .then(second => {
     console.log(second)
   })
+  .catch(err => console.log(err))
 
-// p.then((res) => {
-//   console.log('out2', res)
-//   return new myPromise(resolve => {
-//     resolve('third')
-//   })
-// })
+p.then((res) => {
+  console.log('out2', res)
+  return new MyPromise(resolve => {
+    resolve('third')
+  })
+})
 /**
  * 文字流程： (resolve和reject都用resolve表示行为，一个意思)
  * 1. var p = new Promise 调用constructor函数 -> 调用executor执行函数 -> 调用resolve或reject -> 改变实例的status和data callbackArray为空 -> 说出承诺
