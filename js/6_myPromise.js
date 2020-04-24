@@ -125,9 +125,50 @@ myPromise.prototype.catch = function (onRejected) {
   return this.then(null, onRejected)
 }
 
+function Promise(excutor) {
+  var self = this
+  self.onResolvedCallback = []
+  function resolve(value) {
+    setTimeout(() => {
+      self.data = value
+      self.onResolvedCallback.forEach(callback => callback(value))
+    })
+  }
+  excutor(resolve.bind(self))
+}
+Promise.prototype.then = function (onResolved) {
+  var self = this
+  return new Promise(resolve => {
+    self.onResolvedCallback.push(function () {
+      var result = onResolved(self.data)
+      if (result instanceof Promise) {
+        result.then(resolve)
+      } else {
+        resolve(result)
+      }
+    })
+  })
+}
+
 var a = 1
 
 var p = new myPromise((resolve, reject) => {
+  console.log('promise constructor')
+  if (a === 1) {
+    setTimeout(() => {
+      resolve(1)
+    }, 1000)
+
+  } else {
+
+    setTimeout(() => {
+      reject("It broke")
+
+    }, 1000)
+  }
+})
+
+var q = new Promise((resolve, reject) => {
   console.log('promise constructor')
   if (a === 1) {
     setTimeout(() => {
@@ -153,7 +194,6 @@ p.then((res) => {
   .then(second => {
     console.log(second)
   })
-  .catch(err => console.log(err))
 
 // p.then((res) => {
 //   console.log('out2', res)
