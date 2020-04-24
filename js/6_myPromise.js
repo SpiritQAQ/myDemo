@@ -1,8 +1,4 @@
 // 手写promise
-// 1.0
-var log = (l) => {
-  console.log(l)
-}
 
 function myPromise(executor) {
   var self = this
@@ -52,31 +48,42 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
   onRejected = typeof onRejected === 'function' ? onRejected : function (reason) { return reason }
 
   const resolvedHandler = function (resolve, reject) {
-    // 如果promise1(此处即为this/self)的状态已经确定并且是resolved，我们调用onFulfilled
-    // 因为考虑到有可能throw，所以我们将其包在try/catch块里
-    try {
-      var x = onFulfilled(self.data)
+    setTimeout(() => {
+      // handler异步调用回调，此处没有考虑microTaskQueue，promise本应是microTask。
+      // 在此处setTimeout会造成 10000个callback生成10000个setTimeout，是为了省事
+      // 可以将setTimeout写在if判断内和callBackArray外，这样就不会生成大量setTimeout，意思到了。
 
-      if (x instanceof myPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
-        x.then(resolve, reject)
+
+      try {
+        var x = onFulfilled(self.data)
+
+        if (x instanceof myPromise) { // 如果onFulfilled的返回值是一个Promise对象，直接取它的结果做为promise2的结果
+          x.then(resolve, reject)
+        }
+        resolve(x) // 否则，以它的返回值做为promise2的结果
+        // console.log("resolvedHandler -> resolve", resolve)
+      } catch (e) {
+        // 因为考虑到有可能throw，所以我们将其包在try/catch块里
+
+        reject(e) // 如果出错，以捕获到的错误做为promise2的结果
       }
-      resolve(x) // 否则，以它的返回值做为promise2的结果
-      // console.log("resolvedHandler -> resolve", resolve)
-    } catch (e) {
-      reject(e) // 如果出错，以捕获到的错误做为promise2的结果
-    }
+    });
+
   }
 
   const rejectedHandler = function (resolve, reject) {
-    try {
-      var x = onRejected(self.data)
+    setTimeout(() => {
+      try {
+        var x = onRejected(self.data)
 
-      if (x instanceof myPromise) {
-        x.then(resolve, reject)
-      }
-    } catch (e) {
-      reject(e)
-    }
+        if (x instanceof myPromise) {
+          x.then(resolve, reject)
+        }
+      } catch (e) {
+        reject(e)
+      } z
+    })
+
   }
 
   if (self.status === 'fulfilled') {
