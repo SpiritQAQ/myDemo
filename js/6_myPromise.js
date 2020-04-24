@@ -112,7 +112,7 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
         rejectedHandler(resolve, reject)
       })
     })
-    // console.log("myPromise.prototype.then -> self.onResolvedCallback", self.onResolvedCallback)
+    console.log("myPromise.prototype.then -> self.onResolvedCallback", self.onResolvedCallback)
 
     console.log("myPromise.prototype.then -> is Pending -> promise2", promise2)
 
@@ -155,6 +155,12 @@ p.then((res) => {
   })
   .catch(err => console.log(err))
 
+// p.then((res) => {
+//   console.log('out2', res)
+//   return new myPromise(resolve => {
+//     resolve('third')
+//   })
+// })
 /**
  * 文字流程： (resolve和reject都用resolve表示行为，一个意思)
  * 1. var p = new Promise 调用constructor函数 -> 调用executor执行函数 -> 调用resolve或reject -> 改变实例的status和data callbackArray为空 -> 说出承诺
