@@ -48,8 +48,8 @@ myPromise.prototype.then = function (onFulfilled, onRejected) {
   // console.log("myPromise.prototype.then -> self.status", self.status)
 
   // 根据标准，如果then的参数不是function，则我们需要忽略它，此处以如下方式处理
-  onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (v) { }
-  onRejected = typeof onRejected === 'function' ? onRejected : function (r) { }
+  onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : function (value) { return value } // 如果不是function就把传进来的值再传出去，让promise的值得以穿透
+  onRejected = typeof onRejected === 'function' ? onRejected : function (reason) { return reason }
 
   const resolvedHandler = function (resolve, reject) {
     // 如果promise1(此处即为this/self)的状态已经确定并且是resolved，我们调用onFulfilled
