@@ -37,33 +37,33 @@
 // })
 
 // texst2
-console.log('script start')
+// console.log('script start')
 
-async function async1() {
-  await async2()
-  console.log('async1 end')
-}
-async function async2() {
-  console.log('async2 end')
-}
-async1()
+// async function async1() {
+//   await async2()
+//   console.log('async1 end')
+// }
+// async function async2() {
+//   console.log('async2 end')
+// }
+// async1()
 
-setTimeout(function () {
-  console.log('setTimeout')
-}, 0)
+// setTimeout(function () {
+//   console.log('setTimeout')
+// }, 0)
 
-new Promise(resolve => {
-  console.log('Promise')
-  resolve()
-})
-  .then(function () {
-    console.log('promise1')
-  })
-  .then(function () {
-    console.log('promise2')
-  })
+// new Promise(resolve => {
+//   console.log('Promise')
+//   resolve()
+// })
+//   .then(function () {
+//     console.log('promise1')
+//   })
+//   .then(function () {
+//     console.log('promise2')
+//   })
 
-console.log('script end')
+// console.log('script end')
 
 // await async2()
 // console.log('async1 end')
@@ -71,3 +71,19 @@ console.log('script end')
 // Promise.resolve(async2()).then(() => {
 //   console.log('async1 end')
 // })
+
+// 3
+const log = (a) => console.log(a)
+function sleep(seconds) {
+  var start = new Date()
+  while (new Date() - start < seconds * 1000) {
+  }
+  return
+}
+setTimeout(() => {
+  log('a')
+}, 3000)
+sleep(0)      //不断重复做一些无意义的工作才能保证js运行按顺序
+setTimeout(() => {
+  log('b')
+}, 1000)
