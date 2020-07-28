@@ -5,7 +5,7 @@ const WINDOWWIDTH = D.clientWidth
 // 第一模块的动画高度 初步定5000
 const BLOCK1HEIGHT = 3000
 
-const BLOCK2HEIGHT = 6000
+const BLOCK2HEIGHT = 10000
 
 const CANVASWIDTH = gE('#iPhone-se').width
 
@@ -50,10 +50,11 @@ window.addEventListener('scroll', () => {
     D.scrollTop > BLOCK1HEIGHT &&
     D.scrollTop <= BLOCK1HEIGHT + BLOCK2HEIGHT - WINDOWHEIGHT
   ) {
+    console.log('D.scrollTop ', D.scrollTop)
     let scrolled = (D.scrollTop - BLOCK1HEIGHT) / (BLOCK2HEIGHT - WINDOWHEIGHT)
 
-    handleTextSlide(gE('#chip-header'), scrolled, 0.1, 0.2, 0.3, 0.5, true)
-    handleChipGradient(scrolled, 0.3, 1)
+    handleTextSlide(gE('#chip-header'), scrolled, 0.02, 0.15, 0.2, 0.35, '-50%')
+    handleChipGradient(scrolled, 0.35, 1)
   }
 })
 
@@ -111,7 +112,7 @@ function changeFrame(frameIdx) {
  * @param {number} endShowRatio 结束展示的滚动比值
  * @param {number} startHideRatio 开始隐藏的滚动比值
  * @param {number} endHideRatio 结束隐藏的滚动比值
- * @param {boolean} noTranslateY 是否有Y轴动画
+ * @param {string} translateX 是否有translatex
  */
 function handleTextSlide(
   el,
@@ -120,11 +121,12 @@ function handleTextSlide(
   endShowRatio,
   startHideRatio,
   endHideRatio,
-  noTranslateY
+  translateX
 ) {
   var opacity = el.style?.opacity > 0 ? el.style?.opacity : 0
-  var translateY =
-    el.style.transform.split('translateY(')[1]?.split('%')[0] / 100 || 0
+  var translateY = translateX
+    ? el.style.transform.split(',')[1]?.split('%')[0] / 100 || 0
+    : el.style.transform.split('translateY(')[1]?.split('%')[0] / 100 || 0
   if (scrolled < startShowRatio) {
     opacity = 0
     translateY = 0
@@ -144,32 +146,39 @@ function handleTextSlide(
   if (scrolled > endHideRatio) {
     opacity = 0
   }
-  el.style = noTranslateY
-    ? `opacity: ${opacity}`
+  el.style = translateX
+    ? `opacity: ${opacity}; transform: translate(${translateX}, ${
+        translateY * 100
+      }%)`
     : `opacity: ${opacity}; transform: translateY(${translateY * 100}%)`
 }
 function handleChipGradient(scrolled, startShowRatio, endShowRatio) {
   const maskEl = gE('#chip-mask')
   const canvasEl = gE('#chip-canvas')
-  const ctrEL = gE('#chip-canvas-ctr')
+  const svgEl = gE('#A13')
+  const svgBgEl = gE('.chip-bg')
+  const chipContentEl = gE('#chip-content')
+
   // var scale =
-  if (scrolled === startShowRatio) {
-    const HEIGHT = 100
-    // canvasEl.style.height = `${HEIGHT}px`
-    // canvasEl.style.width = `${HEIGHT}px`
-    maskEl.style.width = `${HEIGHT * 0.9}px`
-    maskEl.style.height = `${HEIGHT * 0.9}px`
-    maskEl.style.opacity = 0.7
+  if (scrolled < startShowRatio) svgEl.style.opacity = 0
+  if (scrolled >= startShowRatio) {
+    svgEl.style.opacity = (scrolled - startShowRatio) * 4
+    chipContentEl.style.width = chipContentEl.style.height = `${
+      WINDOWWIDTH * 150 * (scrolled - startShowRatio) ** 3
+    }px`
   }
-  if (scrolled >= startShowRatio && scrolled <= endShowRatio) {
-    const ratio = scrolled * 3
-    const HEIGHT = 1000 * ratio
-    // canvasEl.height = `${HEIGHT * 2}`
-    // canvasEl.width = `${HEIGHT * 2}`
-    // canvasEl.style.height = `${HEIGHT}px`
-    // canvasEl.style.width = `${HEIGHT}px`
-    // maskEl.style.width = `${HEIGHT * 0.9}px`
-    // maskEl.style.height = `${HEIGHT * 0.9}px`
+  if (scrolled > 0.8) {
+    svgBgEl.style.opacity = (1 - (scrolled - startShowRatio)) / 0.55
+    chipContentEl.classList.add('transparent')
+  } else {
+    chipContentEl.classList.remove('transparent')
+    svgBgEl.style.opacity = 1
+  }
+
+  if (scrolled > 0.95) {
+    chipContentEl.style.opacity = (1 - scrolled) / 0.05
+  } else {
+    chipContentEl.style.opacity = 1
   }
 }
 
