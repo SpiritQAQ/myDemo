@@ -8,6 +8,20 @@ html {
   font-family: 'SF Pro Display', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
     'Arial', sans-serif;
   color: #f5f5f7;
+
+  --iphone-black-bg: #000;
+  --iphone-black-text: #f2f2f2;
+
+  --iphone-white-bg: #fff;
+  --iphone-white-text: #8b8b99;
+  --iphone-white-text-highlight: #1d1d1f;
+
+  --iphone-red-bg: #960b19;
+  --iphone-red-text: #e57571;
+  --iphone-red-text-highlight: #f5f5f7;
+
+  --iphone-width: 460px;
+  --iphone-offscreen: -720px;
 }
 body {
   height: 30000px;
@@ -148,4 +162,79 @@ video {
 
 #A13 .chip-mask {
   fill: #000;
+}
+
+#block3 {
+  height: 300vh;
+  position: relative;
+}
+
+#Three-phone-block {
+  font-size: 48px;
+  position: sticky;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  /* overflow: hidden; */
+}
+#Three-phone-block .phone-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.phone-box h4 {
+  color: #fff;
+  font-size: 1em;
+  margin-bottom: 60px;
+}
+
+.phone-box img {
+  display: block;
+  width: 460px;
+  margin-bottom: -720px;
+}
+
+.black-phone {
+  background-color: #2f2f2f;
+  z-index: 10;
+}
+.black-phone h4 {
+  color: var(--iphone-black-text);
+}
+
+#Three-phone-block .white-phone {
+  background-color: var(--iphone-white-bg);
+  z-index: 20;
+
+  clip-path: inset(100% 0px 0px 0px);
+  /* 从上往下剪切100% */
+}
+
+#Three-phone-block .white-phone h4 {
+  color: var(--iphone-white-text);
+}
+
+#Three-phone-block .white-phone h4 span {
+  color: var(--iphone-white-text-highlight);
+}
+
+#Three-phone-block .red-phone {
+  background-color: var(--iphone-red-bg);
+  z-index: 30;
+
+  clip-path: inset(100% 0px 0px 0px);
+}
+
+#Three-phone-block .red-phone h4 {
+  color: var(--iphone-red-text);
+}
+
+#Three-phone-block .red-phone h4 span {
+  color: var(--iphone-red-text-highlight);
 }

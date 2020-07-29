@@ -7,6 +7,8 @@ const BLOCK1HEIGHT = 3000
 
 const BLOCK2HEIGHT = 10000
 
+const BLOCK3HEIGHT = gE('#block3').clientHeight
+
 const CANVASWIDTH = gE('#iPhone-se').width
 
 let showingFrame = null
@@ -56,12 +58,38 @@ window.addEventListener('scroll', () => {
     D.scrollTop > BLOCK1HEIGHT &&
     D.scrollTop <= BLOCK1HEIGHT + BLOCK2HEIGHT - WINDOWHEIGHT
   ) {
-    console.log('D.scrollTop ', D.scrollTop)
     let scrolled = (D.scrollTop - BLOCK1HEIGHT) / (BLOCK2HEIGHT - WINDOWHEIGHT)
 
     handleTextSlide(gE('#chip-header'), scrolled, 0.05, 0.15, 0.2, 0.35, '-50%')
     handleChipGradient(scrolled, 0.35, 1)
+  } else if (
+    D.scrollTop > BLOCK1HEIGHT + BLOCK2HEIGHT - 500 &&
+    D.scrollTop <= BLOCK1HEIGHT + BLOCK2HEIGHT + BLOCK3HEIGHT
+  ) {
+    let scrolled =
+      (D.scrollTop - BLOCK1HEIGHT - BLOCK2HEIGHT + 500) / BLOCK3HEIGHT
+    console.log('scrolled', scrolled)
+
+    const blackEl = gE('.black-phone')
+    const whiteEl = gE('.white-phone')
+    const redEl = gE('.red-phone')
+
+    if (scrolled >= 1 / 3) {
+      whiteEl.style.clipPath = `inset(${
+        ((2 / 3 - scrolled) / (1 / 3)) * 100
+      }% 0px 0px 0px)`
+      redEl.style.clipPath = `inset(100% 0px 0px 0px)`
+    }
+    if (scrolled >= 2 / 3) {
+      redEl.style.clipPath = `inset(${
+        ((1 - scrolled) / (1 / 3)) * 100
+      }% 0px 0px 0px)`
+    }
+    if (scrolled >= 1) {
+      redEl.style.clipPath = `none`
+    }
   }
+  console.log('D.scrollTop', D.scrollTop)
 })
 
 const images = []
