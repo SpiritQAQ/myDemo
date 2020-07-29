@@ -44,6 +44,12 @@ window.addEventListener('scroll', () => {
         -CANVASWIDTH / 4 + (CANVASWIDTH * ratio) / 2
       }px`
     }
+    const headerScrolled = D.scrollTop / (BLOCK1HEIGHT - WINDOWHEIGHT)
+    handleTextSlide(gE('#phone-name'), headerScrolled, 0.02, 0.2, 0.3, 0.4)
+    handleTextSlide(gE('#row2'), headerScrolled, 0.06, 0.22, 0.3, 0.4)
+    handleTextSlide(gE('#row3'), headerScrolled, 0.1, 0.24, 0.3, 0.4)
+    handleTextSlide(gE('#row4'), headerScrolled, 0.14, 0.26, 0.3, 0.4)
+
     handleTextSlide(gE('.se-text-right'), scrolled, 0.5, 0.6, 0.7, 0.8)
     handleTextSlide(gE('.se-text-left'), scrolled, 0.82, 0.9)
   } else if (

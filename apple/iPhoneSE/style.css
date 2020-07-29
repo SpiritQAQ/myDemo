@@ -32,6 +32,32 @@ body {
   top: 0;
   height: 3500px;
 }
+
+#block1-header {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  /* opacity: 1; */
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  z-index: 1000;
+  text-align: center;
+  line-height: 64px;
+}
+#block1-header #phone-name {
+  font-size: 32px;
+  line-height: 64px;
+  /* margin-bottom: ; */
+}
+#block1-header #row2 {
+  margin: 10px 0;
+}
+#block1-header #row3,
+#block1-header #row4 {
+  font-size: 32px;
+  line-height: 64px;
+}
+
 #iPhone-se {
   position: relative;
   margin-top: -80px;
