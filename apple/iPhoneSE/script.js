@@ -53,7 +53,7 @@ window.addEventListener('scroll', () => {
     console.log('D.scrollTop ', D.scrollTop)
     let scrolled = (D.scrollTop - BLOCK1HEIGHT) / (BLOCK2HEIGHT - WINDOWHEIGHT)
 
-    handleTextSlide(gE('#chip-header'), scrolled, 0.02, 0.15, 0.2, 0.35, '-50%')
+    handleTextSlide(gE('#chip-header'), scrolled, 0.05, 0.15, 0.2, 0.35, '-50%')
     handleChipGradient(scrolled, 0.35, 1)
   }
 })
@@ -162,13 +162,13 @@ function handleChipGradient(scrolled, startShowRatio, endShowRatio) {
   // var scale =
   if (scrolled < startShowRatio) svgEl.style.opacity = 0
   if (scrolled >= startShowRatio) {
-    svgEl.style.opacity = (scrolled - startShowRatio) * 4
+    svgEl.style.opacity = (scrolled - startShowRatio) * 5
     chipContentEl.style.width = chipContentEl.style.height = `${
       WINDOWWIDTH * 150 * (scrolled - startShowRatio) ** 3
     }px`
   }
-  if (scrolled > 0.8) {
-    svgBgEl.style.opacity = (1 - (scrolled - startShowRatio)) / 0.55
+  if (scrolled > 0.55) {
+    svgBgEl.style.opacity = (1 - (scrolled - startShowRatio)) / 0.8
     chipContentEl.classList.add('transparent')
   } else {
     chipContentEl.classList.remove('transparent')
