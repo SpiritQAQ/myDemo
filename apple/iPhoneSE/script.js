@@ -2,6 +2,9 @@ const gE = (el) => document.querySelector(el)
 const D = document.documentElement
 const WINDOWHEIGHT = D.clientHeight
 const WINDOWWIDTH = D.clientWidth
+
+const BLOCK0HEIGHT = 1000
+
 // 第一模块的动画高度 初步定5000
 const BLOCK1HEIGHT = 3000
 
@@ -13,22 +16,30 @@ const CANVASWIDTH = gE('#iPhone-se').width
 
 let showingFrame = null
 
-function toogleSticky(el, isSticky) {
-  if (isSticky) {
-    el.style = 'position: sticky'
-  } else {
-    el.style = 'position: relative'
-  }
-}
+// function toogleSticky(el, isSticky) {
+//   if (isSticky) {
+//     el.style = 'position: sticky'
+//   } else {
+//     el.style = 'position: relative'
+//   }
+// }
 
 window.addEventListener('scroll', () => {
-  if (D.scrollTop <= BLOCK1HEIGHT - WINDOWHEIGHT) {
-    toogleSticky(gE('#block1'), true)
-
+  if (D.scrollTop <= BLOCK0HEIGHT) {
+    const headerScrolled = D.scrollTop / BLOCK0HEIGHT
+    handleTextSlide(gE('#phone-name'), headerScrolled, 0.02, 0.4, 0.7, 0.9)
+    handleTextSlide(gE('#row2'), headerScrolled, 0.06, 0.44, 0.7, 0.9)
+    handleTextSlide(gE('#row3'), headerScrolled, 0.1, 0.48, 0.7, 0.9)
+    handleTextSlide(gE('#row4'), headerScrolled, 0.14, 0.52, 0.7, 0.9)
+  }
+  if (
+    D.scrollTop <= BLOCK1HEIGHT + BLOCK0HEIGHT - WINDOWHEIGHT &&
+    D.scrollTop > BLOCK0HEIGHT
+  ) {
     // 手机旋转即BLOCK1相关逻辑
     // 已滚动百分比 0~1
     // 已滚动高度 / 块总高度 - 一屏高度
-    let scrolled = D.scrollTop / (BLOCK1HEIGHT - WINDOWHEIGHT)
+    let scrolled = (D.scrollTop - BLOCK0HEIGHT) / (BLOCK1HEIGHT - WINDOWHEIGHT)
 
     let frame = Math.ceil(scrolled * 84)
     changeFrame(frame)
@@ -46,29 +57,21 @@ window.addEventListener('scroll', () => {
         -CANVASWIDTH / 4 + (CANVASWIDTH * ratio) / 2
       }px`
     }
-    const headerScrolled = D.scrollTop / (BLOCK1HEIGHT - WINDOWHEIGHT)
-    handleTextSlide(gE('#phone-name'), headerScrolled, 0.02, 0.2, 0.3, 0.4)
-    handleTextSlide(gE('#row2'), headerScrolled, 0.06, 0.22, 0.3, 0.4)
-    handleTextSlide(gE('#row3'), headerScrolled, 0.1, 0.24, 0.3, 0.4)
-    handleTextSlide(gE('#row4'), headerScrolled, 0.14, 0.26, 0.3, 0.4)
-
     handleTextSlide(gE('.se-text-right'), scrolled, 0.5, 0.6, 0.7, 0.8)
     handleTextSlide(gE('.se-text-left'), scrolled, 0.82, 0.9)
   } else if (
-    D.scrollTop > BLOCK1HEIGHT &&
-    D.scrollTop <= BLOCK1HEIGHT + BLOCK2HEIGHT - WINDOWHEIGHT
+    D.scrollTop > +BLOCK1HEIGHT &&
+    D.scrollTop <= +BLOCK1HEIGHT + BLOCK2HEIGHT
   ) {
-    let scrolled = (D.scrollTop - BLOCK1HEIGHT) / (BLOCK2HEIGHT - WINDOWHEIGHT)
+    let scrolled = (D.scrollTop - BLOCK1HEIGHT) / BLOCK2HEIGHT
 
-    handleTextSlide(gE('#chip-header'), scrolled, 0.05, 0.15, 0.2, 0.35, '-50%')
+    handleTextSlide(gE('#chip-header'), scrolled, 0.1, 0.25, 0.35, 0.42, '-50%')
     handleChipGradient(scrolled, 0.35, 1)
   } else if (
-    D.scrollTop > BLOCK1HEIGHT + BLOCK2HEIGHT - 500 &&
-    D.scrollTop <= BLOCK1HEIGHT + BLOCK2HEIGHT + BLOCK3HEIGHT
+    D.scrollTop > +BLOCK1HEIGHT + BLOCK2HEIGHT &&
+    D.scrollTop <= +BLOCK1HEIGHT + BLOCK2HEIGHT + BLOCK3HEIGHT
   ) {
-    let scrolled =
-      (D.scrollTop - BLOCK1HEIGHT - BLOCK2HEIGHT + 500) / BLOCK3HEIGHT
-    console.log('scrolled', scrolled)
+    let scrolled = (D.scrollTop - BLOCK1HEIGHT - BLOCK2HEIGHT) / BLOCK3HEIGHT
 
     const blackEl = gE('.black-phone')
     const whiteEl = gE('.white-phone')
@@ -89,7 +92,6 @@ window.addEventListener('scroll', () => {
       redEl.style.clipPath = `none`
     }
   }
-  console.log('D.scrollTop', D.scrollTop)
 })
 
 const images = []
