@@ -32,19 +32,20 @@ body {
   top: 0; */
   /* height: 100vh; */
   height: 600vh;
-  position: relative;
+  /* position: relative; */
 }
 
 #iPhone-se-canvas-ctr {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  /* position: relative; */
 }
 #block1 {
-  position: sticky;
-  top: 0;
-  height: 3500px;
+  height: 4000px;
+  /* margin-bottom: 500px; */
 }
 
 #block1-header {
@@ -57,6 +58,9 @@ body {
   z-index: 1000;
   text-align: center;
   line-height: 64px;
+}
+#block1-header div {
+  opacity: 0;
 }
 #block1-header #phone-name {
   font-size: 32px;
@@ -99,9 +103,8 @@ body {
   transform: translateY(-50%);
 }
 #block2 {
-  position: sticky;
-  top: 0;
   height: 10000px;
+  position: relative;
 }
 #chip-ctr {
   position: sticky;
@@ -229,6 +232,7 @@ video {
   z-index: 30;
 
   clip-path: inset(100% 0px 0px 0px);
+  padding-bottom: 60vh;
 }
 
 #Three-phone-block .red-phone h4 {
@@ -237,4 +241,58 @@ video {
 
 #Three-phone-block .red-phone h4 span {
   color: var(--iphone-red-text-highlight);
+}
+
+#block4 {
+  margin-top: 60vh;
+}
+
+#slide-ctr {
+  position: fixed;
+  top: 5vh;
+  left: 5vw;
+  height: 90vh;
+  width: 90vw;
+  opacity: 0;
+  /* visibility: hidden; */
+}
+#slide-ctr iframe {
+  height: 100%;
+  width: 100%;
+}
+#slide-switch {
+  height: 100px;
+  width: 100px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  background-color: transparent;
+  /* background-color: #fff; */
+}
+
+#block4 {
+  height: 300vh;
+  position: relative;
+}
+#block4-content {
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  color: #fff;
+}
+
+#block4 .block4-text {
+  font-size: 44px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#block4 #text-2 {
+  color: #ccc;
+  top: 40%;
+}
+#block4 #text-2 {
+  color: #ccc;
+  top: 60%;
 }

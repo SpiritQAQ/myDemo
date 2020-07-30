@@ -12,6 +12,8 @@ const BLOCK2HEIGHT = 10000
 
 const BLOCK3HEIGHT = gE('#block3').clientHeight
 
+const BLOCK4HEIGHT = gE('#block4').clientHeight
+
 const CANVASWIDTH = gE('#iPhone-se').width
 
 let showingFrame = null
@@ -91,6 +93,15 @@ window.addEventListener('scroll', () => {
     if (scrolled >= 1) {
       redEl.style.clipPath = `none`
     }
+  } else if (
+    D.scrollTop > +BLOCK1HEIGHT + BLOCK2HEIGHT + BLOCK3HEIGHT &&
+    D.scrollTop <= +BLOCK1HEIGHT + BLOCK2HEIGHT + BLOCK3HEIGHT + BLOCK4HEIGHT
+  ) {
+    let scrolled =
+      (D.scrollTop - BLOCK1HEIGHT - BLOCK2HEIGHT - BLOCK3HEIGHT) / BLOCK4HEIGHT
+
+    handleTextSlide(gE('#text-1'), scrolled, 0.5, 0.6, 1, 1, '-50%')
+    handleTextSlide(gE('#text-2'), scrolled, 0.9, 1, 1, 1, '-50%')
   }
 })
 
