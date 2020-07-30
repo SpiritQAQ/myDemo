@@ -215,15 +215,15 @@ function handleChipGradient(scrolled, startShowRatio, endShowRatio) {
     }px`
   }
   if (scrolled > 0.55) {
-    svgBgEl.style.opacity = (1 - (scrolled - startShowRatio)) / 0.8
+    svgBgEl.style.opacity = (1 - scrolled) / 0.45 - 0.1
     chipContentEl.classList.add('transparent')
   } else {
     chipContentEl.classList.remove('transparent')
     svgBgEl.style.opacity = 1
   }
 
-  if (scrolled > 0.95) {
-    chipContentEl.style.opacity = (1 - scrolled) / 0.05
+  if (scrolled > 0.9) {
+    chipContentEl.style.opacity = (1 - scrolled) / 0.1
   } else {
     chipContentEl.style.opacity = 1
   }
