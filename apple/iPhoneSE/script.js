@@ -33,6 +33,11 @@ window.addEventListener('scroll', () => {
     handleTextSlide(gE('#row2'), headerScrolled, 0.06, 0.44, 0.7, 0.9)
     handleTextSlide(gE('#row3'), headerScrolled, 0.1, 0.48, 0.7, 0.9)
     handleTextSlide(gE('#row4'), headerScrolled, 0.14, 0.52, 0.7, 0.9)
+  } else {
+    gE('#phone-name').style.opacity = 0
+    gE('#row2').style.opacity = 0
+    gE('#row3').style.opacity = 0
+    gE('#row4').style.opacity = 0
   }
   if (
     D.scrollTop <= BLOCK1HEIGHT + BLOCK0HEIGHT - WINDOWHEIGHT &&
@@ -199,6 +204,14 @@ function handleTextSlide(
       }%)`
     : `opacity: ${opacity}; transform: translateY(${translateY * 100}%)`
 }
+
+/**
+ * 处理A13的动画
+ *
+ * @param {*} scrolled
+ * @param {*} startShowRatio
+ * @param {*} endShowRatio
+ */
 function handleChipGradient(scrolled, startShowRatio, endShowRatio) {
   const maskEl = gE('#chip-mask')
   const canvasEl = gE('#chip-canvas')
