@@ -21,7 +21,7 @@ function 做饭(data) {
     console.log('做饭ing')
 
     setTimeout(function () {
-      if (true) {
+      if (false) {
         const error = '坏了，米坏了。停'
         reject(error)
         return
