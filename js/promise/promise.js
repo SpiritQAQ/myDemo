@@ -39,7 +39,7 @@ class MyPromise {
     try {
       executor(this.resolve.bind(this), this.reject.bind(this))
     } catch (e) {
-      reject(e)
+      this.reject(e)
     }
   }
   resolve(value) {
@@ -64,22 +64,42 @@ class MyPromise {
 
   // then
   then(onResolved, onRejected) {
+    onResolved = this._isFunction(onResolved) ? onResolved : (value) => value
+    onRejected = this._isFunction(onRejected)
+      ? onRejected
+      : (reason) => {
+          throw reason
+        }
     return new MyPromise((nextResolve, nextReject) => {
       const resolveHandler = () => {
-        let result = onResolved(this.value)
-        if (result instanceof MyPromise) {
-          result.then(nextResolve, nextReject)
-        } else {
-          nextResolve(this.value)
+        // setTimeout(() => {
+        try {
+          let result = onResolved(this.value)
+          if (result instanceof MyPromise) {
+            result.then(nextResolve, nextReject)
+          } else {
+            nextResolve(this.value)
+          }
+        } catch (e) {
+          nextReject(e)
         }
+        // })
       }
 
       const rejectHandler = () => {
-        let result = onRejected(this.reason)
-        if (result instanceof MyPromise) {
-          result.then(nextResolve, nextReject)
-        } else {
-          nextResolve(result)
+        try {
+          let result = onRejected(this.reason)
+
+          if (result instanceof MyPromise) {
+            result.then(nextResolve, nextReject)
+          } else {
+            // 这里是this.reason 不是 result
+            nextResolve(this.reason)
+          }
+        } catch (e) {
+          // 是在这一步把catch的错误处理函数捕获到的， onRejected里throw出来的
+          // nextReject就是下一次调用Promise构造函数的
+          nextReject(e)
         }
       }
       try {
@@ -91,16 +111,12 @@ class MyPromise {
             rejectHandler()
             break
           case PENDING: {
-            if (this._isFunction(onResolved)) {
-              this.onResolvedCallbacks.push(() => {
-                resolveHandler()
-              })
-            }
-            if (this._isFunction(onRejected)) {
-              this.onRejectedCallbacks.push(() => {
-                rejectHandler()
-              })
-            }
+            this.onResolvedCallbacks.push(() => {
+              resolveHandler()
+            })
+            this.onRejectedCallbacks.push(() => {
+              rejectHandler()
+            })
           }
         }
       } catch (e) {
@@ -110,8 +126,7 @@ class MyPromise {
   }
 
   catch(e) {
-    console.log(e)
-    onRejected(this.reason)
+    this.then(null, e)
   }
 }
 

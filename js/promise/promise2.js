@@ -24,10 +24,6 @@ export default class MyPromise {
     if (this.status === PENDING) {
       this.status = FULFILLED
       this.value = value
-      console.log(
-        '🚀 ~ file: promise2.js ~ line 28 ~ MyPromise ~ resolve ~ this.resolvedCallbacks',
-        this.resolvedCallbacks
-      )
       this.resolvedCallbacks.forEach((fn) => fn())
     }
   }

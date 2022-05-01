@@ -1,7 +1,7 @@
-// import MyPromise from './promise.js'
+import MyPromise from './promise.js'
 // import MyPromise from './promise2.js'
 // import MyPromise from '../6_myPromise.js'
-import MyPromise from './promise_A+.js'
+// import MyPromise from './promise_A+.js'
 Promise = MyPromise
 
 const log = console.log
@@ -21,11 +21,17 @@ function 做饭(data) {
     console.log('做饭ing')
 
     setTimeout(function () {
+      if (true) {
+        const error = '坏了，米坏了。停'
+        reject(error)
+        return
+      }
       //对做好的饭进行下一步处理。
       const result = {
         主食: '米饭',
         菜: [data[0] + data[1], data[1] + data[2]],
       }
+
       log('做饭ok', result)
 
       resolve(result)
@@ -56,5 +62,6 @@ function 电话通知我(n) {
   .then((买好的菜) => 做饭(买好的菜))
   //把做好的饭送到老婆公司
   .then((做好的饭) => 送饭(做好的饭))
-  //送完饭后打电话通知我
+  // 送完饭后打电话通知我
   .then((送饭结果) => 电话通知我(送饭结果))
+  .catch((reason) => log('我是最终失败的结果', reason))

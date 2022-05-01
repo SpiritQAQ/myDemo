@@ -138,6 +138,9 @@ class myPromise {
 
     return promise2
   }
+  catch(e) {
+    this.then(null, e)
+  }
 }
 
 /**
