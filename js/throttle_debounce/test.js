@@ -1,4 +1,5 @@
 import debounce from './debounce.js'
+import throttle from './throttle.js'
 
 const WAIT_TIME = 1300
 
@@ -18,4 +19,5 @@ function getUserAction(e) {
   container.innerHTML = count
 }
 
-container.onmousemove = debounce(getUserAction, WAIT_TIME, true)
+// container.onmousemove = debounce(getUserAction, WAIT_TIME, true)
+container.onmousemove = throttle(getUserAction, WAIT_TIME)
