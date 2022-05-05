@@ -7,17 +7,20 @@ class EventEmitter {
     this.eventMap = {}
   }
 
+  // 订阅者触发订阅
   addEventListener(type, listener) {
     const listenerList = this.eventMap[type] || []
     listenerList.push(listener)
     this.eventMap[type] = listenerList
   }
 
+  // 发布者触发发布
   publish(type, ...arg) {
     let listeners = this.eventMap[type] || []
     listeners.forEach((listener) => listener(...arg))
   }
 
+  // 取消订阅
   removeEventListener(type, listener) {
     const listeners = this.eventMap[type]
     if (!listeners) return
@@ -29,6 +32,28 @@ class EventEmitter {
       if (i === listener) console.log('发现需要remove的订阅者', idx)
       return i !== listener
     })
+  }
+
+  //  once 方法只监听一次，调用完毕后删除缓存函数（订阅一次）
+  //   Vue.prototype.$once = function (event, fn) {
+  //     var vm = this;
+  //     // 先绑定，后删除
+  //     function on () {
+  //         vm.$off(event, on);
+  //         fn.apply(vm, arguments);
+  //     }
+  //     on.fn = fn;
+  //     vm.$on(event, on);
+  //     return vm
+  // };
+  once(type, fn) {
+    const _this = this
+    function on(...arg) {
+      _this.removeEventListener(type, on)
+      fn(...arg)
+    }
+    this.addEventListener(type, on)
+    return this
   }
 }
 let publisherId = 1
@@ -91,7 +116,6 @@ const eventEmitter = new EventEmitter()
 const DELIVERER_NUMBER = 3
 
 const delivererList = [...Array(DELIVERER_NUMBER)].map(() => new Deliverer())
-const fn = (deliverer) => deliverer.update.bind(deliverer)
 delivererList.forEach((deliverer) => {
   eventEmitter.addEventListener(
     'order',
@@ -107,10 +131,13 @@ eventEmitter.addEventListener('salary', ({ money }) =>
   delivererList[1].getSalary(money)
 )
 
+// 测试once功能， 只发一次薪水
+eventEmitter.once('salary', ({ money }) => delivererList[1].getSalary(money))
+
 // 订单发布中心
 const orderPublisher = new Publisher(eventEmitter)
 
-// 发薪水
+// 薪水发布中心
 const salaryPublisher = new Publisher(eventEmitter)
 
 // const orderInterval = () => {
@@ -145,4 +172,8 @@ orderPublisher.publish(
 
 salaryPublisher.publish('salary', {
   money: '$400',
+})
+
+salaryPublisher.publish('salary', {
+  money: '$300',
 })
