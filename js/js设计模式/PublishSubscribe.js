@@ -57,7 +57,7 @@ class EventEmitter {
   }
 }
 let publisherId = 1
-// 发布者 订单中心
+// 发布者 订单中心 这一部分可以不要，合到eventEmitter的publish方法里
 class Publisher {
   constructor(emitter) {
     this.emitter = emitter
