@@ -13,9 +13,22 @@ class EventEmitter {
     this.eventMap[type] = listenerList
   }
 
-  publish(type, orderData) {
+  publish(type, ...arg) {
     let listeners = this.eventMap[type] || []
-    listeners.forEach((fn) => fn(orderData))
+    listeners.forEach((listener) => listener(...arg))
+  }
+
+  removeEventListener(type, listener) {
+    const listeners = this.eventMap[type]
+    if (!listeners) return
+    if (!listener) {
+      // 该type下 全部清空
+      return (this.eventMap[type] = null)
+    }
+    this.eventMap[type] = listeners.filter((i, idx) => {
+      if (i === listener) console.log('发现需要remove的订阅者', idx)
+      return i !== listener
+    })
   }
 }
 let publisherId = 1
@@ -28,8 +41,8 @@ class Publisher {
   }
 
   // 发布订单到调度中心
-  publish(type, orderData) {
-    this.emitter.publish(type, orderData)
+  publish(type, ...arg) {
+    this.emitter.publish(type, ...arg)
   }
 }
 let SubscriberId = 1
@@ -37,30 +50,38 @@ let SubscriberId = 1
 class Subscriber {
   constructor() {
     this.id = SubscriberId
-    this.orderStatus = null
-    this.orderData = null
-    // this.callback = callback
     SubscriberId++
   }
+}
 
+class Deliverer extends Subscriber {
+  constructor() {
+    super()
+    this.orderStatus = null
+    this.orderData = null
+  }
   // 我抢到了订单
   getOrder() {
     const { orderData } = this
     if (orderData?.orderLock) return
+    if (this.orderStatus)
+      return console.log(`我是外卖员${this.id}， 我已经有订单了，不用抢`)
     this.orderStatus = true
     this.orderData.orderLock = true
     console.log(`我是外卖员${this.id}，我抢到了${orderData.orderId}`)
   }
 
   update(order) {
-    if (this.orderStatus)
-      return console.log(`我是外卖员${this.id}， 我已经有订单了，不用抢`)
     console.log(`我是外卖员${this.id}，我被update了，得知了有新订单可以抢`)
 
     setTimeout(() => {
       this.orderData = order
       this.getOrder()
     }, 1000 * Math.random())
+  }
+
+  getSalary(salary) {
+    console.log(`我是外卖员${this.id}，我收到了薪水:${salary}`)
   }
 }
 
@@ -69,13 +90,28 @@ const eventEmitter = new EventEmitter()
 // 外卖员人数
 const DELIVERER_NUMBER = 3
 
-const delivererList = [...Array(DELIVERER_NUMBER)].map(() => new Subscriber())
+const delivererList = [...Array(DELIVERER_NUMBER)].map(() => new Deliverer())
+const fn = (deliverer) => deliverer.update.bind(deliverer)
 delivererList.forEach((deliverer) => {
-  eventEmitter.addEventListener('order', deliverer.update.bind(deliverer))
+  eventEmitter.addEventListener(
+    'order',
+    (deliverer.update = deliverer.update.bind(deliverer))
+  )
+  // 直接deliverer.update.bind(deliverer) 不能 remove
 })
+
+// 外卖员2离职，不接订单， 发薪水
+eventEmitter.removeEventListener('order', delivererList[1].update)
+
+eventEmitter.addEventListener('salary', ({ money }) =>
+  delivererList[1].getSalary(money)
+)
 
 // 订单发布中心
 const orderPublisher = new Publisher(eventEmitter)
+
+// 发薪水
+const salaryPublisher = new Publisher(eventEmitter)
 
 // const orderInterval = () => {
 //   if (delivererList.every((item) => item.orderStatus))
@@ -103,6 +139,10 @@ orderPublisher.publish(
 orderPublisher.publish(
   'order',
   new Order({
-    orderId: 4,
+    orderId: 3,
   })
 )
+
+salaryPublisher.publish('salary', {
+  money: '$400',
+})
