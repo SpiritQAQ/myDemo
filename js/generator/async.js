@@ -1,11 +1,4 @@
-const renderArticle = (data) => {
-  const dom = document.createElement('div')
-  dom.innerHTML = JSON.stringify(data)
-
-  document.body.appendChild(dom)
-  return '渲染完成'
-}
-
+import { renderArticle, renderButton } from './test.js'
 async function ArticleGenerator() {
   const url = 'http://localhost:3000/article/list'
   const url2 = 'http://localhost:3000/article/detail'
@@ -20,4 +13,4 @@ async function ArticleGenerator() {
   console.log(result)
 }
 
-ArticleGenerator()
+renderButton(() => ArticleGenerator())
