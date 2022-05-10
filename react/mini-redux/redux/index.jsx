@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-
+import _ from 'lodash'
 /**
  * reducer用来规范state创建流程
  * dispatch用来规范setState的流程包括reduce流程 dispatch是来自react-redux
@@ -10,7 +10,10 @@ export const reducer = (state, { type, payload }) => {
   if (type === 'createTag') {
     return {
       ...state,
-      tagList: [...(state.tagList || []), payload],
+      tag: {
+        ...state.tag,
+        tagList: [...(state.tag.tagList || []), payload],
+      },
     }
   } else {
     return state
@@ -19,16 +22,27 @@ export const reducer = (state, { type, payload }) => {
 
 // conncet 是由 react-redux提供
 // 连接组件和全局状态
-export function connect(Component) {
+// 通过seletor可以实现组件只在自己的数据变化时渲染
+export const connect = (selector) => (Component) => {
   return (componentProps) => {
     const { state, setState, subscribe } = useContext(AppContext)
+
+    const data = selector ? selector(state) : state
 
     const [, update] = useState({})
     useEffect(() => {
       // 首次渲染，订阅store变化
       // 变化发生的时候通过setState触发connect重新渲染
-      subscribe(() => update({}))
-    }, [])
+      subscribe(() => {
+        const newData = selector ? selector(store.state) : store.state
+        // 判断命名空间内数据是否变化，来控制是否重新渲染
+        if (!_.isEqual(data, newData)) {
+          update({})
+          // console.log('update')
+        }
+      })
+      // 如果seletor变化，会造成重复订阅
+    }, [selector])
 
     const dispatch = (action) => {
       const newState = reducer(state, action)
@@ -36,7 +50,7 @@ export function connect(Component) {
       setState(newState)
     }
 
-    return <Component {...componentProps} dispatch={dispatch} state={state} />
+    return <Component {...componentProps} dispatch={dispatch} {...data} />
   }
 }
 
@@ -59,6 +73,11 @@ class Store {
   }
 }
 export const store = new Store({
-  tagList: [],
+  tag: {
+    tagList: [],
+  },
+  user: {
+    userList: ['User1', 'User2'],
+  },
 })
 export const AppContext = React.createContext(store)

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 
 import { connect } from '../redux/index'
 
-const TagBuilder = ({ dispatch, state }) => {
+const TagBuilder = ({ dispatch }) => {
   const [tagName, setTagName] = useState('')
 
   const handleInputChange = (e) => {
@@ -28,4 +28,4 @@ const TagBuilder = ({ dispatch, state }) => {
   )
 }
 
-export default connect(TagBuilder)
+export default connect(({ tag }) => ({ tag }))(TagBuilder)

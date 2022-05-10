@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import TagBuilder from './components/TagBuilder'
 import TagList from './components/TagList'
-import Another from './components/Another'
+import UserList from './components/UserList'
 
 import { store, AppContext } from './redux'
 
@@ -12,7 +12,7 @@ const App = () => {
       <TagBuilder />
       <br />
 
-      <Another />
+      <UserList />
 
       <TagList />
     </AppContext.Provider>
