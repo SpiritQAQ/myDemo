@@ -4,20 +4,22 @@ import _ from 'lodash'
  * reducer用来规范state创建流程
  * dispatch用来规范setState的流程包括reduce流程 dispatch是来自react-redux
  *
- * @param {*} state
  */
-export const reducer = (state, { type, payload }) => {
-  if (type === 'createTag') {
-    return {
-      ...state,
-      tag: {
-        ...state.tag,
-        tagList: [...(state.tag.tagList || []), payload],
-      },
+const store = {
+  state: {},
+  listener: [],
+  reducer: undefined,
+
+  setState: (newState) => {
+    store.state = newState
+    store.listener.forEach((fn) => fn(newState))
+  },
+  subscribe: (fn) => {
+    store.listener.push(fn)
+    return () => {
+      store.listener.splice(store.listener.findIndex(fn), 1)
     }
-  } else {
-    return state
-  }
+  },
 }
 
 // conncet 是由 react-redux提供
@@ -28,7 +30,7 @@ export const reducer = (state, { type, payload }) => {
 // 是为了第一步可以封装,直接调用connectToTag(TagList)
 export const connect = (selector, mapDispatchToProps) => (Component) => {
   return (componentProps) => {
-    const { state, setState, subscribe } = useContext(AppContext)
+    const { state, setState, subscribe, reducer } = useContext(AppContext)
 
     const data = selector ? selector(state) : state
 
@@ -44,6 +46,7 @@ export const connect = (selector, mapDispatchToProps) => (Component) => {
           // console.log('update')
         }
       })
+
       // 如果seletor变化，会造成重复订阅
     }, [selector])
 
@@ -68,30 +71,9 @@ export const connect = (selector, mapDispatchToProps) => (Component) => {
   }
 }
 
-class Store {
-  constructor(initState) {
-    this.state = initState
-    this.listener = []
-  }
-
-  setState = (newState) => {
-    store.state = newState
-    this.listener.forEach((fn) => fn(newState))
-  }
-
-  subscribe = (fn) => {
-    this.listener.push(fn)
-    return () => {
-      this.listener.splice(this.listener.findIndex(fn), 1)
-    }
-  }
+export const createStore = (reducer, initState) => {
+  store.reducer = reducer
+  store.state = initState
+  return store
 }
-export const store = new Store({
-  tag: {
-    tagList: [],
-  },
-  user: {
-    userList: ['User1', 'User2'],
-  },
-})
-export const AppContext = React.createContext(store)
+export const AppContext = React.createContext(null)
