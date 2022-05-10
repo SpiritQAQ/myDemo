@@ -4,7 +4,7 @@ import TagBuilder from './components/TagBuilder'
 import TagList from './components/TagList'
 import UserList from './components/UserList'
 
-import { AppContext, createStore } from './redux'
+import { Provider, createStore } from './redux'
 
 const reducer = (state, { type, payload }) => {
   if (type === 'createTag') {
@@ -31,14 +31,14 @@ const store = createStore(reducer, {
 
 const App = () => {
   return (
-    <AppContext.Provider value={store}>
+    <Provider store={store}>
       <TagBuilder />
       <br />
 
       <UserList />
 
       <TagList />
-    </AppContext.Provider>
+    </Provider>
   )
 }
 

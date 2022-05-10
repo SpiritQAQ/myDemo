@@ -30,7 +30,7 @@ const store = {
 // 是为了第一步可以封装,直接调用connectToTag(TagList)
 export const connect = (selector, mapDispatchToProps) => (Component) => {
   return (componentProps) => {
-    const { state, setState, subscribe, reducer } = useContext(AppContext)
+    const { state, setState, subscribe, reducer } = store
 
     const data = selector ? selector(state) : state
 
@@ -77,3 +77,7 @@ export const createStore = (reducer, initState) => {
   return store
 }
 export const AppContext = React.createContext(null)
+
+export const Provider = ({ store, children }) => {
+  return <AppContext.Provider value={store}>{children}</AppContext.Provider>
+}
