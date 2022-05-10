@@ -23,7 +23,10 @@ export const reducer = (state, { type, payload }) => {
 // conncet 是由 react-redux提供
 // 连接组件和全局状态
 // 通过seletor可以实现组件只在自己的数据变化时渲染
-export const connect = (selector) => (Component) => {
+// ===========
+// 为什么connect要分开两次调用 => connect(mapStateToProps, mapDispatchToProps)(组件)
+// 是为了第一步可以封装,直接调用connectToTag(TagList)
+export const connect = (selector, mapDispatchToProps) => (Component) => {
   return (componentProps) => {
     const { state, setState, subscribe } = useContext(AppContext)
 
@@ -50,7 +53,18 @@ export const connect = (selector) => (Component) => {
       setState(newState)
     }
 
-    return <Component {...componentProps} dispatch={dispatch} {...data} />
+    const thePropsFromMapDispatch = mapDispatchToProps
+      ? mapDispatchToProps(dispatch)
+      : {}
+
+    return (
+      <Component
+        {...componentProps}
+        dispatch={dispatch}
+        {...data}
+        {...thePropsFromMapDispatch}
+      />
+    )
   }
 }
 

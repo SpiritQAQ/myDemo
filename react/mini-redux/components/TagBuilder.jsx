@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 
 import { connect } from '../redux/index'
 
-const TagBuilder = ({ dispatch }) => {
+const TagBuilder = ({ add }) => {
   const [tagName, setTagName] = useState('')
 
   const handleInputChange = (e) => {
@@ -12,10 +12,7 @@ const TagBuilder = ({ dispatch }) => {
   const handleCreateTag = () => {
     if (!tagName) return alert('error, empty')
 
-    dispatch({
-      type: 'createTag',
-      payload: tagName,
-    })
+    add(tagName)
   }
 
   return (
@@ -28,4 +25,17 @@ const TagBuilder = ({ dispatch }) => {
   )
 }
 
-export default connect(({ tag }) => ({ tag }))(TagBuilder)
+export default connect(
+  // mapStateToProps
+  ({ tag }) => ({ tag }),
+  // mapDispatchToProps
+  (dispatch) => {
+    return {
+      add: (newTag) =>
+        dispatch({
+          type: 'createTag',
+          payload: newTag,
+        }),
+    }
+  }
+)(TagBuilder)
