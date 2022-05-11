@@ -15,6 +15,14 @@ const reducer = (state, { type, payload }) => {
         tagList: [...(state.tag.tagList || []), payload],
       },
     }
+  } else if (type === 'setTagList') {
+    return {
+      ...state,
+      tag: {
+        ...state.tag,
+        tagList: payload,
+      },
+    }
   } else {
     return state
   }

@@ -48,11 +48,15 @@ export const connect = (selector, mapDispatchToProps) => (Component) => {
       // 变化发生的时候通过setState触发connect重新渲染
       subscribe(() => {
         const newData = selector ? selector(state) : state
+        console.log(
+          '🚀 ~ file: index.jsx ~ line 51 ~ subscribe ~ newData',
+          newData
+        )
 
         // 判断命名空间内数据是否变化，来控制是否重新渲染
         if (!_.isEqual(data, newData)) {
           update({})
-          // console.log('update')
+          console.log('update')
         }
       })
 
