@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>冒泡和捕获</title>
+    <style>
+      div {
+        border: 1px solid #222;
+      }
+      #grandpa,
+      #father {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+      }
+      #grandpa {
+        width: 300px;
+        height: 300px;
+      }
+      #father {
+        width: 200px;
+        height: 200px;
+      }
+      #son {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="grandpa">
+      <div id="father">
+        <div id="son"></div>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.querySelectorAll('div').forEach((item) => {
+      item.addEventListener(
+        'click',
+        (event) => {
+          // event.stopPropagation()
+          // 阻止事件继续传播
+          console.log({
+            currentTaget: event.currentTarget,
+            target: event.target,
+            eventPhase: event.eventPhase,
+          })
+        },
+        // event.target —— 引发事件的层级最深的元素。
+        // event.currentTarget（=this）—— 处理事件的当前元素（具有处理程序的元素）
+        // event.eventPhase —— 当前阶段（capturing=1，target=2，bubbling=3）。
+
+        // capture 选项有两个可能的值：
+        // 如果为 false（默认值），则在冒泡阶段设置处理程序。
+        // 如果为 true，则在捕获阶段设置处理程序。
+        true
+      )
+    })
+  </script>
+</html>
